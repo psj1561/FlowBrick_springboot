@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+	
+<mapper namespace="pms.dao.Dao_JangSunWoong">
+
+
+	 <update id="uptPrjBasic" parameterType="projectBasic">
+		    UPDATE PROJECTBASIC 
+		    SET PRJNAME =#{prjName},
+		    	PRJPRIORITY=#{prjPriority},
+		    	PRJBEGIN=to_date(#{beginDateStr},'YYYY-MM-DD'),
+		   		PRJEND=to_date(#{endDateStr},'YYYY-MM-DD'),
+		   		PRJSTEP =#{prjStep} 
+		    WHERE prjNo=#{prjNo}
+	 </update>
+
+	<delete id="delPrjBasic" parameterType="int">
+		DELETE projectbasic WHERE prjNo=#{prjNo}
+	</delete>
+
+
+	<select id="getPrjName" resultType="String" parameterType="int">
+		SELECT prjname FROM PROJECTBASIC
+		WHERE prjNo=#{prjNo}
+	</select>
+
+
+
+
+	<select id="getMRList" resultType="materialresource" parameterType="materialresource">
+		SELECT * FROM MATERIALRESOURCE
+		WHERE prjname LIKE '%'||#{prjname}||'%'
+		AND  materialresourcename LIKE '%'||#{materialresourcename}||'%'
+		and prjNo=#{prjNo}
+		ORDER BY MATERIALRESOURCENO
+	</select>
+
+	<select id="totalPriceMr" resultType="int" parameterType="materialresource">
+		SELECT sum(price*PRODUCTCNT) FROM MATERIALRESOURCE
+		WHERE prjname LIKE '%'||#{prjname}||'%'
+		AND  materialresourcename LIKE '%'||#{materialresourcename}||'%'
+		and prjNo=#{prjNo}
+	</select>
+	
+	<insert id="insertMR" parameterType="materialresource">
+		INSERT INTO MATERIALRESOURCE
+		values(#{materialresourceno},#{prjNo},#{prjname},#{rentorbuy},#{price},#{materialresourcename},#{productcnt},#{facilityloc},#{division})
+	</insert>
+	
+	<delete id="delMaterialResource" parameterType="int">
+		DELETE MATERIALRESOURCE
+		WHERE materialresourceno=#{materialresourceno}
+	</delete>
+
+
+	<select id="getDetailMR" resultType="materialresource" parameterType="int">
+		SELECT * FROM MATERIALRESOURCE 
+		WHERE MATERIALRESOURCENO = #{materialresourceno}
+	</select>
+
+
+
+
+
+
+
+
+	<select id="getHRList" resultType="humanresource" parameterType="humanresource">
+		SELECT * FROM HUMANRESOURCE
+		WHERE tel LIKE '%'||#{tel}||'%'
+		and prjNo=#{prjNo}
+	</select>
+
+	<select id="totalPriceHr" resultType="int" parameterType="humanresource">
+		SELECT sum(sal) FROM HUMANRESOURCE
+		WHERE tel LIKE '%'||#{tel}||'%'
+		and prjNo=#{prjNo}
+	</select>
+
+	<insert id="insertHR" parameterType="humanresource">
+		INSERT INTO humanresource values(#{tel},#{prjNo},#{deptno},#{empno},#{sal})
+	</insert>
+	
+	<delete id="delHumanResource" parameterType="int">
+		DELETE humanresource
+		WHERE tel=#{tel};
+	</delete>
+
+</mapper>	

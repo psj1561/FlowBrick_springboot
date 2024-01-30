@@ -1,0 +1,31 @@
+package com.web.spring.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.web.spring.service.EmpService;
+import com.web.spring.vo.Emp;
+
+@Controller
+public class A04_EmpController {
+	@Autowired(required = false)
+	private EmpService service;
+	
+	//http://localhost:5050/empList
+	@RequestMapping("empList")
+	public String empList(Emp sch, Model d) {
+		System.out.println("#데이터 건수: "+service.getEmpList(sch).size());
+		
+		d.addAttribute("empList", service.getEmpList(sch));
+		return "a12_empList";
+	}
+
+	
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="pms.dao.Dao_project">
+	<select id="cntProject" resultType="int" parameterType="projectSch">
+		SELECT COUNT(*)
+		FROM projectbasic
+		WHERE 1=1
+		AND prjname LIKE '%'||#{prjName}||'%'
+	</select>
+	<select id="projectList" parameterType="projectSch" resultType="projectBasic">
+		SELECT rownum cnt, pb.*
+		FROM projectbasic pb
+		WHERE prjname like '%'||#{prjName}||'%'
+	</select>
+	
+	<insert id="insertProjectBasic" parameterType="projectBasic">
+		INSERT INTO projectbasic VALUES(
+			 prj_seq.nextval, #{prjName}, #{prjPriority},
+			 to_date(#{prjAcceptDateStr},'YYYY-MM-DD'),
+			 to_date(#{beginDateStr},'YYYY-MM-DD'), 
+			 to_date(#{endDateStr},'YYYY-MM-DD'), 
+			 #{prjStep}
+		)
+	</insert>
+	
+	<insert id="insertProjectTeam" parameterType="projectTeam">
+		INSERT INTO projecteam VALUES(
+			team_seq.nextval, #{teamName}, prj_seq.currval
+		)
+	</insert>
+		
+	<insert id="insertTeam" parameterType="int">
+		INSERT INTO teammate VALUES(
+			tm_seq.nextval, team_seq.currval, #{empno}, #{auth}
+		)
+	</insert>
+	<!--
+	<select id="tmList" parameterType="">
+		SELECT tm.*, 
+		FROM teammate
+		WHERE 
+	</select>
+	 -->
+</mapper>	

@@ -1,0 +1,32 @@
+package com.web.spring.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.web.spring.dao.Dao_login;
+import com.web.spring.vo.Emp;
+import com.web.spring.vo.EmpInfo;
+
+@Service
+public class WebService_login {
+	@Autowired(required = false)
+	private Dao_login dao;
+	
+	public Emp login(Emp sch) {
+		return dao.login(sch); // null, 객체가 할당.
+	}
+	
+	public String signUp(Emp ins) {
+		return dao.signUp(ins)>0?"등록성공":"등록실패";
+	}
+	
+	public EmpInfo getEmpInfo(int empno) {
+		return dao.getEmpInfo(empno);
+	}
+	
+	public String updateEmpInfo(Emp upt) {
+		return dao.updateEmpInfo(upt)>0?"수정성공":"수정실패";
+	}
+	
+	
+}

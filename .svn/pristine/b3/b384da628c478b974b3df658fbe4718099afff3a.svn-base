@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.spring.dao.EmpDao">
+	<select id="getEmpList" parameterType="emp" resultType="emp">
+		select * from emp01 
+			 where ename like '%'||#{ename}||'%' 
+			 and job like '%'||#{job}||'%'
+			 order by empno
+	</select>
+	<update id="empUpdate" parameterType="emp">
+		update EMP01
+			set ename=#{ename},
+				job = #{job},
+				mgr = #{mgr},
+				hiredate=to_date (#{hiredatestr}, 'YYYY-MM-DD'),
+				sal = #{sal},
+				comm = #{comm},
+				deptno = #{deptno}
+			where empno = #{empno}		
+	</update>
+</mapper>	

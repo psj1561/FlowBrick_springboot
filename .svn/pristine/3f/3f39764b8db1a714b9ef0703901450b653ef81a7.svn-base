@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias alias="emp" type="com.web.spring.vo.Emp" />
+		<typeAlias alias="empInfo" type="com.web.spring.vo.EmpInfo" />
+		
+		<typeAlias alias="humanresource" type="com.web.spring.vo.HumanResource"/>
+		<typeAlias alias="materialresource" type="com.web.spring.vo.MaterialResource"/>
+		<typeAlias alias="projectSch" type="com.web.spring.vo.ProjectSch"/>
+		<typeAlias alias="projectBasic" type="com.web.spring.vo.ProjectBasic"/>
+		<typeAlias alias="projectTeam" type="com.web.spring.vo.ProjectTeam"/>
+		<typeAlias alias="repository" type="com.web.spring.vo.Repository"/>
+		
+		<typeAlias alias="notice" type="com.web.spring.vo.Notice"/>		
+		<typeAlias alias="noticeSch" type="com.web.spring.vo.NoticeSch"/>					
+	</typeAliases>
+</configuration>

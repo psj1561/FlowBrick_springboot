@@ -1,0 +1,388 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"
+    
+    %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="path" value="${pageContext.request.contextPath }"/>
+<fmt:requestEncoding value="utf-8"/>     
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="${path}/a00_com/bootstrap.min.css" >
+<link rel="stylesheet" href="${path}/a00_com/jquery-ui.css" >
+    <link href="${path}/a00_com/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="${path}/a00_com/css/sb-admin-2.min.css" rel="stylesheet">
+ 
+<style type="text/css">
+	.input-group-text{width:100%;background-color:linen;
+		color:black;font-weight:bolder;}
+	.input-group-prepend{width:20%;}
+	#chatArea{
+		width:80%;height:200px;overflow-y:auto;text-align:left;
+		border:1px solid green;
+	}
+	.jumbotron{padding:2%;}	
+</style>
+
+
+<script src="${path}/a00_com/jquery.min.js"></script>
+<script src="${path}/a00_com/popper.min.js"></script>
+<script src="${path}/a00_com/bootstrap.min.js"></script>
+<script src="${path}/a00_com/jquery-ui.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://developers.google.com/web/ilt/pwa/working-with-the-fetch-api" type="text/javascript"></script>
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		
+		var loginSession="${empResult.auth}" // 세션처리
+		alert("loginSession : "+loginSession) // 세션처리
+			
+		// submit 엔터 방지
+		$("form").on("keypress",function(e){
+			if(e.keyCode==13){ 
+				e.preventDefault() 
+			}
+		})
+		
+		
+		
+		//Search버튼 클릭 기능
+		$("#schBtn").click(function(){
+			$("#frm01").attr("action","${path}/HRList.do")
+			$("#frm01").submit()
+		})
+
+		
+		
+		
+		
+		//인적자원 등록 버튼을 클릭하면 열리는 모달창
+		$("#regFrmBtn").click(function(){
+			$("#frm02")[0].reset();
+			$("#regBtn").show()
+			$("#uptBtn").hide()
+			$("#delBtn").hide()
+			$("[name=prjNo]").val(${hrsch.prjNo})
+		})
+		
+		
+		
+		//등록 모달창에서 최종적으로 등록 누르면 작동
+		$("#regBtn").click(function(){
+			$.ajax({
+				url:"${path}/insertHR.do",
+				data:$("#frm02").serialize(),
+				type:"post",
+				success:function(data){
+					location.href="${path}/HRList.do?prjNo="+$("[name=prjNo]").val()
+				},
+				error:function(err){
+					alert(err)
+				}
+			})
+		})
+
+		
+		
+		
+		
+	})
+	
+
+</script>
+</head>
+
+<body id="page-top">
+
+
+
+
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<!-- Sidebar -->
+		<%@ include file="inc/sliderBar.jsp" %>
+		<!-- End of Sidebar -->
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<!-- Topbar    -->
+				<%@ include file="inc/topBar.jsp" %>
+				<!-- End of Topbar -->
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+
+
+<div class="jumbotron text-center">
+  <h2>인적 자원 리스트</h2>
+</div>
+
+<div class="container">
+	<form id="frm01" class="form"  method="post">
+  	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  	
+  	
+  	
+  	
+	    <input placeholder="전화번호" name="tel"  value="${hrsch.tel}" class="form-control mr-sm-2" />
+	    <input type="hidden" name="prjNo"  value="${hrsch.prjNo}"  class="form-control mr-sm-2"/>
+	    
+	    
+	    
+	    
+	    <button class="btn btn-info" id="schBtn"type="button">Search</button>
+		<button id="regFrmBtn" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" type="button">인적자원 등록</button>
+	    
+	    
+	    
+ 	</nav>
+
+
+
+
+	</form>
+	
+	
+	
+   <table class="table table-hover table-striped">
+   	<col width="20%">
+   	<col width="20%">
+   	<col width="20%">
+   	<col width="20%">
+   	<col width="20%">
+
+
+    <thead>
+      <tr class="table-success text-center">
+        <th>전화번호</th>
+		<th>프로젝트번호</th>
+		<th>부서번호</th>
+		<th>사원번호</th>
+		<th>급여</th>
+      </tr>
+    </thead>	
+    <tbody>
+    
+    
+    	<c:forEach var="hr" items="${hrList}">
+    		<tr>
+    		<td>${hr.tel}</td>
+    		<td>${hr.prjNo}</td>
+    		<td>${hr.deptno}</td>
+    		<td>${hr.empno}</td>
+    		<td>${hr.sal}</td>
+    		</tr>
+    	</c:forEach>
+    	<tr>
+    	<td colspan="4" style="text-align:right;">총액 </td><td><fmt:formatNumber value="${totalPriceHr}"/></td>
+    	</tr>
+    </tbody>
+		
+
+	</table>    
+</div>
+
+				</div>
+				<!-- /.container-fluid -->
+
+			</div>
+			<!-- End of Main Content -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<!-- Insert Project -->
+			<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="HumanResourceTitle">인적자원 등록</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+							
+							
+							
+								<form id="frm02" class="form" method="post">
+								
+	
+									
+									<div class="input-group mb-3">
+										<div class="input-group-prepend ">
+											<span class="input-group-text  justify-content-center">
+												전화번호</span>
+										</div>
+										<input type="text" name="tel" class="form-control" value=""/>
+									</div>
+									
+									
+									
+									
+									
+									<div class="input-group mb-3">
+										<div class="input-group-prepend ">
+											<span class="input-group-text  justify-content-center">
+												프로젝트번호</span>
+										</div>
+										<input type="number" name="prjNo" class="form-control" readonly value=""/>
+									</div>
+									
+									
+									
+									
+									
+									
+									
+									<div class="input-group mb-3">
+										<div class="input-group-prepend ">
+											<span class="input-group-text  justify-content-center">
+												부서번호</span>
+										</div>
+										<input type="number" name="deptno" class="form-control" value=""/>
+									</div>
+									
+									
+									
+									
+									
+									
+									
+									
+									<div class="input-group mb-3">
+										<div class="input-group-prepend ">
+											<span class="input-group-text  justify-content-center">
+												사원번호</span>
+										</div>
+										<input type="number" name="empno" class="form-control"/>
+									</div>
+									
+									
+									
+													
+									<div class="input-group mb-3">
+										<div class="input-group-prepend ">
+											<span class="input-group-text  justify-content-center">
+												급여</span>
+										</div>
+										<input type="number" name="sal" class="form-control"/>
+									</div>
+									
+									
+									
+
+									
+									
+								</form>
+							</div>
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							<div class="modal-footer">
+								<button type="button" id="regBtn" class="btn btn-primary">인적자원 등록</button>
+								<button type="button" id="uptBtn" class="btn btn-info">인적자원 수정</button>
+								<button type="button" id="delBtn" class="btn btn-warning">인적자원 삭제</button>
+								<button type="button" id="clsBtn" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							</div>
+
+
+
+
+						</div>
+					</div>
+				</div>
+			<!-- End of Insert Project -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<!-- Footer -->
+			<footer class="sticky-footer bg-white">
+				<div class="container my-auto">
+					<div class="copyright text-center my-auto">
+						<span>Copyright &copy; Your Website 2021</span>
+					</div>
+				</div>
+			</footer>
+			<!-- End of Footer -->
+
+		</div>
+		<!-- End of Content Wrapper -->
+
+	</div>
+	<!-- End of Page Wrapper -->
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> 
+		<i class="fas fa-angle-up"></i>
+	</a>
+	<!-- Logout Modal-->
+	<%@ include file="/z05_bootTmp/a08_logout_modal.jsp" %>
+	
+<!-- Bootstrap core JavaScript-->
+    <script src="${path}/a00_com/vendor/jquery/jquery.min.js"></script>
+<script
+	src="${path}/a00_com/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="${path}/a00_com/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="${path}/a00_com/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="${path}/a00_com/vendor/chart.js/Chart.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="${path}/a00_com/js/demo/chart-area-demo.js"></script>
+<script src="${path}/a00_com/js/demo/chart-pie-demo.js"></script>	
+</body>
+</html>

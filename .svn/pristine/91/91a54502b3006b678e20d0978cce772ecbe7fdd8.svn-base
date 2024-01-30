@@ -1,0 +1,40 @@
+package com.web.spring.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import com.web.spring.vo.Emp;
+
+@Mapper
+public interface EmpDao {
+
+	List<Emp> getEmpList(Emp sch);
+	
+	@Insert("INSERT INTO EMP01 values(#{empno}, #{ename}, #{job}, #{mgr},"
+			+ " to_date(#{hiredatestr}, 'YYYY-MM-DD'), #{sal}, \r\n"
+			+ " #{comm}, #{deptno})")
+	int insertEmp(Emp ins);
+	
+	@Select("SELECT * FROM EMP01 WHERE EMPNO = #{empno}")
+	Emp getEmp(int empno);
+
+	int empUpdate(Emp upt);
+	
+	
+	
+	@Select("SELECT DISTINCT JOB"
+			+ " from emp01"
+			+ " order by job")
+	List<String> getJobs();
+	
+	@Select("SELECT DISTINCT m.empno, m.ename"
+			+ " FROM EMP01 e, emp01 m "
+			+ " WHERE e.mgr = m.empno"
+			+ " order by empno")
+	List<Emp> getMgrInfos();
+	
+	
+}

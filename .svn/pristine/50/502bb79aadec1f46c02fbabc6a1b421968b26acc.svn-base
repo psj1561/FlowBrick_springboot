@@ -1,0 +1,23 @@
+package com.web.spring.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.web.spring.service.WebService;
+
+
+@Controller
+public class WebController {
+	@Autowired(required = false)
+	private WebService service;
+
+	// http://211.63.89.67:2222/pms/index.do	
+	// http://localhost:7080/pms/index.do	
+	@RequestMapping("index.do")
+	public String index() {
+		return "WEB-INF\\view\\index.jsp";
+	}
+
+
+}

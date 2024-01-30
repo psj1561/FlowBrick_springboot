@@ -1,0 +1,37 @@
+package com.web.spring.vo;
+
+public class TeamMate {
+	private int tmNo;		//팀원 번호
+	private int empno;		//사원 번호
+	private String auth;	//권한
+	
+	public TeamMate() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public TeamMate(int tmNo, int empno, String auth) {
+		this.tmNo = tmNo;
+		this.empno = empno;
+		this.auth = auth;
+	}
+	
+	public int getTmNo() {
+		return tmNo;
+	}
+	public void setTmNo(int tmNo) {
+		this.tmNo = tmNo;
+	}
+	public int getEmpno() {
+		return empno;
+	}
+	public void setEmpno(int empno) {
+		this.empno = empno;
+	}
+	public String getAuth() {
+		return auth;
+	}
+	public void setAuth(String auth) {
+		this.auth = auth;
+	}
+	
+}

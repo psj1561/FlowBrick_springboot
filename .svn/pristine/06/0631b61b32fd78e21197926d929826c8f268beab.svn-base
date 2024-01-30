@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.spring.dao.Dao_login">
+
+	<select id="login" resultType="emp" parameterType="emp">
+		SELECT * FROM
+		EMP WHERE empno=#{empno} AND password=#{password}
+	</select>
+
+	<insert id="signUp"  parameterType="emp">
+		INSERT INTO emp(empno, ename, email, deptno, job) VALUES (emp_seq.nextval, #{ename},#{email},#{deptno}, #{job} )
+	</insert>
+
+
+	<select id="getEmpInfo" resultType="empInfo" parameterType="int">
+		SELECT empno, ename, dname, job, tel, email
+		FROM emp e left join dept d
+		on e.deptno=d.deptno where empno=#{empno}
+	</select>
+	
+	
+	<update id="updateEmpInfo" parameterType="emp">
+		UPDATE emp set tel=#{tel} where empno = #{empno}
+	</update>
+
+</mapper>	

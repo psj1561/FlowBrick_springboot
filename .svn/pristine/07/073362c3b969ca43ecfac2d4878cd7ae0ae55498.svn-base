@@ -1,0 +1,22 @@
+# DB설정
+spring.datasource.url=jdbc:oracle:thin:@211.63.89.67:1521:xe
+spring.datasource.username=team2
+spring.datasource.password=2222
+spring.datasource.driver-class-name=oracle.jdbc.driver.OracleDriver
+# mybatis mapper를 처리시..
+mybatis.config-location=classpath:mybatis/mybatis.conf.xml
+mybatis.mapper-locations=classpath:mybatis/mapper/**.xml
+
+# 톰캣 port
+server.port=2222
+# view 기본 폴드
+spring.mvc.view.prefix=/WEB-INF/views/
+spring.mvc.view.suffix=.jsp
+
+#reload
+spring.devtools.restart.enabled=true
+spring.devtools.livereload.enabled=true
+
+
+# 업로드할 파일 경로
+# file.upload=C:/a01_springbt/workspace/flowbrick/src/main/resources/static/z02_upload/

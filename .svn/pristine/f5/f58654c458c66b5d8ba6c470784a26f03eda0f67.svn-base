@@ -1,0 +1,40 @@
+package com.web.spring.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.web.spring.service.WebService_project;
+import com.web.spring.vo.ProjectBasic;
+import com.web.spring.vo.ProjectSch;
+
+@Controller
+public class WebController_project {
+	@Autowired(required = false)
+	private WebService_project service;
+	
+	// http://localhost:7080/pms/projectList.do
+	@GetMapping("projectList.do")
+	public String projectList() {
+		return "WEB-INF\\view\\project_list.jsp";
+	}
+	
+	// http://localhost:7080/pms/projectListJson.do
+	@GetMapping("projectListJson.do")
+	public String projectListJson(ProjectSch sch, Model d) {
+		d.addAttribute("projectList", service.projectList(sch));
+		return "pageJsonReport";
+	}
+	
+	// http://localhost:7080/pms/insertProjectBasic.do
+	@PostMapping("insertProjectBasic.do")
+	public String insertProjectBasic(ProjectBasic ins, Model d, ProjectSch sch) {
+		d.addAttribute("msg", service.insertProjectBasic(ins));
+		d.addAttribute("projectlist", service.projectList(sch));
+		return "pageJsonReport";
+	}
+
+
+}

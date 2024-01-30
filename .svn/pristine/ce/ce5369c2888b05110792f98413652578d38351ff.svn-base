@@ -1,0 +1,21 @@
+package com.web.spring.dao;
+
+import com.web.spring.vo.Emp;
+import com.web.spring.vo.EmpInfo;
+
+// pms.dao.Dao_login
+public interface Dao_login {
+	
+	// 로그인
+	Emp login(Emp sch);
+	
+	// 회원가입
+	int signUp(Emp ins);
+	
+	// 마이페이지 회원정보 출력
+	public EmpInfo getEmpInfo(int empno);
+	
+	//수정처리
+	int updateEmpInfo(Emp upt);
+}
+

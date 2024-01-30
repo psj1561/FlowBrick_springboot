@@ -1,0 +1,23 @@
+package com.web.spring.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.web.spring.dao.Dao;
+import com.web.spring.vo.MemberSS;
+
+
+@Service
+public class WebService {
+	
+	@Autowired(required = false)
+	private Dao dao;
+	
+	public List<MemberSS> memList(MemberSS sch) {
+		if(sch.getNickname()==null) sch.setNickname("");
+		return dao.memList(sch);
+	}
+		
+}
