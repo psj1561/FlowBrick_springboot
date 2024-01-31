@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.spring.dao.Dao_risk">
+	<select id="cntRisk" resultType="int" parameterType="riskSch">
+		SELECT COUNT(*)
+		FROM risk
+		WHERE 1=1
+		AND riskname LIKE '%'||#{riskName}||'%'
+	</select>
+	<select id="riskList" parameterType="riskSch" resultType="risk">
+		SELECT * 
+		FROM (
+			SELECT rownum cnt, r.*
+			FROM risk r, fb_emp e, projectbasic p
+			WHERE 1=1
+			AND r.riskname like '%'||#{riskName}||'%'
+			AND e.ename like '%'||#{ename}||'%'
+			AND r.empno = e.empno
+			AND p.prjName like '%'||#{prjName}||'%'
+			AND r.prjNo = p.prjNo
+			order by cnt DESC 
+		)
+		where cnt BETWEEN #{start} AND #{end}
+	</select>
+	<insert id="insertRisk" parameterType="risk">
+		INSERT INTO risk VALUES(
+			risk_seq.nextval, #{prjNo}, #{empNo}, #{riskName}, #{riskContent},
+			#{dangerStep}, to_date(#{uploadDateStr}, 'YYYY-MM-DD'), 
+			to_date(#{completeDateStr}, 'YYYY-MM-DD'), #{state}
+		)
+	</insert>
+</mapper>	

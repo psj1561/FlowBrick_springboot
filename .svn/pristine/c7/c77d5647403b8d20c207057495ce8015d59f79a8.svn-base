@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+	
+<mapper namespace="com.web.spring.dao.Dao_JangSunWoong">
+
+
+	 <update id="uptPrjBasic" parameterType="projectBasic">
+		    UPDATE PROJECTBASIC 
+		    SET PRJNAME =#{prjName},
+		    	PRJPRIORITY=#{prjPriority},
+		    	PRJBEGIN=to_date(#{beginDateStr},'YYYY-MM-DD'),
+		   		PRJEND=to_date(#{endDateStr},'YYYY-MM-DD'),
+		   		PRJSTEP =#{prjStep} 
+		    WHERE prjNo=#{prjNo}
+	 </update>
+
+	<delete id="delPrjBasic" parameterType="int">
+		DELETE projectbasic WHERE prjNo=#{prjNo}
+	</delete>
+
+
+	<select id="getPrjName" resultType="String" parameterType="int">
+		SELECT prjname FROM PROJECTBASIC
+		WHERE prjNo=#{prjNo}
+	</select>
+	
+	<update id="changePrjName" parameterType="int">
+		UPDATE MATERIALRESOURCE 
+		SET prjname= (SELECT prjname FROM projectbasic WHERE prjno=#{prjNo})
+		WHERE prjno =#{prjNo}
+	</update>
+	
+	
+	
+
+
+
+
+	<select id="getMRList" resultType="materialresource" parameterType="materialresource">
+		SELECT * FROM MATERIALRESOURCE
+		WHERE prjname LIKE '%'||#{prjname}||'%'
+		AND  materialresourcename LIKE '%'||#{materialresourcename}||'%'
+		and prjNo=#{prjNo}
+		ORDER BY MATERIALRESOURCENO
+	</select>
+
+	<select id="totalPriceMr" resultType="int" parameterType="materialresource">
+		SELECT sum(price*PRODUCTCNT) FROM MATERIALRESOURCE
+		WHERE prjname LIKE '%'||#{prjname}||'%'
+		AND  materialresourcename LIKE '%'||#{materialresourcename}||'%'
+		and prjNo=#{prjNo}
+	</select>
+	
+	<insert id="insertMR" parameterType="materialresource">
+		INSERT INTO MATERIALRESOURCE
+		values(#{materialresourceno},#{prjNo},#{prjname},#{rentorbuy},#{price},#{materialresourcename},#{productcnt},#{facilityloc},#{division})
+	</insert>
+	
+	<select id="getDetailMR" resultType="materialresource" parameterType="int">
+		SELECT * FROM MATERIALRESOURCE 
+		WHERE MATERIALRESOURCENO = #{materialresourceno}
+	</select>
+	
+	<delete id="delMaterialResource" parameterType="int">
+		DELETE MATERIALRESOURCE
+		WHERE materialresourceno=#{materialresourceno}
+	</delete>
+
+
+	<update id="uptMR" parameterType="materialresource">
+		UPDATE MATERIALRESOURCE
+		SET 
+		prjno=#{prjNo},
+		prjname=#{prjNo},
+		rentorbuy=#{rentorbuy},
+		price=#{price},
+		materialresourcename=#{materialresourcename},
+		productcnt=#{productcnt},
+		facilityloc=#{facilityloc},
+		division=#{division}
+		WHERE materialresourceno=#{materialresourceno}
+	</update>
+
+
+
+
+
+
+
+
+
+	<select id="getHRList" resultType="humanresource" parameterType="humanresource">
+		SELECT * FROM HUMANRESOURCE
+		WHERE tel LIKE '%'||#{tel}||'%'
+		and prjNo=#{prjNo}
+	</select>
+
+	<select id="totalPriceHr" resultType="int" parameterType="humanresource">
+		SELECT sum(sal) FROM HUMANRESOURCE
+		WHERE tel LIKE '%'||#{tel}||'%'
+		and prjNo=#{prjNo}
+	</select>
+
+	<insert id="insertHR" parameterType="humanresource">
+		INSERT INTO humanresource values(#{tel},#{prjNo},#{deptno},#{empno},#{sal})
+	</insert>
+	
+	<select id="getDetailHR" resultType="humanresource" parameterType="String">
+		SELECT * FROM HUMANRESOURCE 
+		WHERE tel=#{tel}
+	</select>
+	
+	<delete id="delHumanResource" parameterType="String">
+		DELETE humanresource
+		WHERE tel=#{tel}
+	</delete>
+
+	<update id="uptHR" parameterType="humanresource">
+		UPDATE HUMANRESOURCE 
+		SET prjno=#{prjNo},
+		deptno=#{deptno},
+		empno=#{empno},
+		sal=#{sal}
+		WHERE tel=#{tel}
+	</update>
+	
+
+
+	
+</mapper>	

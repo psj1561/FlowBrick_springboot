@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.spring.dao.Dao_emp">
+
+	<select id="login" resultType="emp" parameterType="emp">
+		SELECT * FROM
+		FB_EMP WHERE empno=#{empno} AND password=#{password}
+	</select>
+
+	<insert id="signUp"  parameterType="emp">
+		INSERT INTO FB_EMP(empno, ename, email, deptno, job) VALUES (fb_empno_seq.nextval, #{ename},#{email},#{deptno}, #{job} )
+	</insert>
+
+
+	<select id="getEmpInfo" resultType="empInfo" parameterType="int">
+		SELECT empno, ename, dname, job, tel, email
+		FROM FB_EMP e left join dept d
+		on e.deptno=d.deptno where empno=#{empno}
+	</select>
+	
+	
+	<update id="updateEmpInfo" parameterType="emp">
+		UPDATE FB_EMP set tel=#{tel} where empno = #{empno}
+	</update>
+
+	<insert id="insertDept" parameterType="dept">
+		INSERT INTO FB_dept(deptno, dname) VALUES (#{deptno},#{dname})
+	</insert>
+
+	<select id="totDept" resultType="int" parameterType="deptSch">
+		SELECT COUNT(*)
+		FROM FB_dept
+		WHERE 1=1
+		AND dname LIKE '%'||#{dname}||'%'
+	</select>
+	
+	<select id="deptList" parameterType="deptSch" resultType="dept">
+		select * 
+		from (
+			select rownum cnt, d.*
+			from FB_dept d
+			where 1=1
+			and dname like '%'||#{dname}||'%'
+			order by deptno
+		)
+		where cnt BETWEEN #{start} AND #{end}
+	</select>
+	
+	
+	<select id="getDept" parameterType="int" resultType="dept">
+		SELECT * FROM FB_dept WHERE deptno = #{deptno}
+	</select>
+	
+	<update id="deptUpdate" parameterType="dept">
+		update FB_dept
+		set
+		dname=#{dname}
+		where deptno = #{deptno}
+	</update>
+	
+	<delete id="deptDelete" parameterType="int">
+		delete
+		from FB_dept
+		where deptno = #{deptno}
+	</delete>
+	
+		
+	<select id="checkDupDeptno" parameterType="int" resultType="int">
+		SELECT count(*) FROM FB_dept WHERE deptno = #{deptno}
+	</select>
+
+
+	
+	
+</mapper>	

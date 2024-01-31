@@ -25,6 +25,15 @@
 		SELECT prjname FROM PROJECTBASIC
 		WHERE prjNo=#{prjNo}
 	</select>
+	
+	<update id="changePrjName" parameterType="int">
+		UPDATE MATERIALRESOURCE 
+		SET prjname= (SELECT prjname FROM projectbasic WHERE prjno=#{prjNo})
+		WHERE prjno =#{prjNo}
+	</update>
+	
+	
+	
 
 
 
@@ -49,16 +58,31 @@
 		values(#{materialresourceno},#{prjNo},#{prjname},#{rentorbuy},#{price},#{materialresourcename},#{productcnt},#{facilityloc},#{division})
 	</insert>
 	
+	<select id="getDetailMR" resultType="materialresource" parameterType="int">
+		SELECT * FROM MATERIALRESOURCE 
+		WHERE MATERIALRESOURCENO = #{materialresourceno}
+	</select>
+	
 	<delete id="delMaterialResource" parameterType="int">
 		DELETE MATERIALRESOURCE
 		WHERE materialresourceno=#{materialresourceno}
 	</delete>
 
 
-	<select id="getDetailMR" resultType="materialresource" parameterType="int">
-		SELECT * FROM MATERIALRESOURCE 
-		WHERE MATERIALRESOURCENO = #{materialresourceno}
-	</select>
+	<update id="uptMR" parameterType="materialresource">
+		UPDATE MATERIALRESOURCE
+		SET 
+		prjno=#{prjNo},
+		prjname=#{prjNo},
+		rentorbuy=#{rentorbuy},
+		price=#{price},
+		materialresourcename=#{materialresourcename},
+		productcnt=#{productcnt},
+		facilityloc=#{facilityloc},
+		division=#{division}
+		WHERE materialresourceno=#{materialresourceno}
+	</update>
+
 
 
 
@@ -83,9 +107,34 @@
 		INSERT INTO humanresource values(#{tel},#{prjNo},#{deptno},#{empno},#{sal})
 	</insert>
 	
-	<delete id="delHumanResource" parameterType="int">
+	<select id="getDetailHR" resultType="humanresource" parameterType="String">
+		SELECT * FROM HUMANRESOURCE 
+		WHERE tel=#{tel}
+	</select>
+	
+	<delete id="delHumanResource" parameterType="String">
 		DELETE humanresource
-		WHERE tel=#{tel};
+		WHERE tel=#{tel}
 	</delete>
 
+	<update id="uptHR" parameterType="humanresource">
+		UPDATE HUMANRESOURCE 
+		SET prjno=#{prjNo},
+		deptno=#{deptno},
+		empno=#{empno},
+		sal=#{sal}
+		WHERE tel=#{tel}
+	</update>
+	
+	
+	
+
+	
+	<select id="getRepositoryList" resultType="repository" parameterType="repository">
+		SELECT * FROM repository 
+		WHERE MATERIALRESOURCENAME LIKE '%'||#{materialresourcename}||'%'
+	</select>
+
+
+	
 </mapper>	

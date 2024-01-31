@@ -1,0 +1,23 @@
+package com.web.spring.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.web.spring.dao.Dao_Dashboard;
+import com.web.spring.vo.Wizet_PrjStep;
+
+@Service
+public class WebService_dashboard {
+	@Autowired(required = false)
+	private Dao_Dashboard dao;
+	// 공지사항 리스트 불러오기
+	
+	public Wizet_PrjStep getPrjStep(int empno) {
+		Wizet_PrjStep test = dao.getPrjStep(empno);
+		
+		return test;
+	} 
+	 
+}
