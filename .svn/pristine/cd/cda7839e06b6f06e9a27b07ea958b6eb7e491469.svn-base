@@ -8,8 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class WebController {
 
 	
+<<<<<<< HEAD:.svn/pristine/cd/cda7839e06b6f06e9a27b07ea958b6eb7e491469.svn-base
 	// http://211.63.89.67:2222/index.do	
 	// http://localhost:2222/index.do
+=======
+	// http://211.63.89.67:2222/pms/index.do	
+	// http://localhost:2223/indpsjex.do
+>>>>>>> 2475b702b436acc89de88876300b9390bb8434fd:src/main/java/com/web/spring/controller/WebController.java
 	@RequestMapping("index.do")
 	public String index() {
 		return "index";
