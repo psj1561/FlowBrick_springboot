@@ -53,40 +53,35 @@ td {
 <script src="${path}/a00_com/jquery-ui.js"></script>
 <script type="text/javascript">
 	var sessId = "${empResult.empno}"
-	var auth = "${empResult.auth}"
 	if (sessId == "") {
 		alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
 		location.href = "${path}/login.do"
-	} else if (auth !== "인사관리자" && auth !== "관리자") {
-		alert("관리자 or 인사관리자만 접근 가능합니다\n메인 메이지로 이동")
-		location.href = "${path}/index.do"
 	}
-
 	var proc = "${proc}"
 	var msg = "${msg}"
 	if (proc != "") {
 		if (proc == "upt") {
-			if (confirm(msg + "\n부서리스트로 이동하시겠습니까?")) {
-				location.href = "${path}/deptList.do"
+			if (confirm(msg + "\n사원리스트로 이동하시겠습니까?")) {
+				location.href = "${path}/empList.do"
 			}
 		}
 		if (proc == "del") {
-			alert(msg + "\n부서리스트로 이동")
-			location.href = "${path}/deptList.do"
+			alert(msg + "\n사원리스트로 이동")
+			location.href = "${path}/empList.do"
 		}
 	}
 	$(document).ready(function() {
 		$("#mainBtn").click(function() {
-			location.href = "${path}/deptList.do";
+			location.href = "${path}/empList.do";
 		})
 		$("#uptBtn").click(function() {
-			$("form").attr("action", "${path}/deptUpdate")
+			$("form").attr("action", "${path}/empUpdate")
 			$("form").submit()
 		})
 		$("#delBtn").click(function() {
 			if (confirm("삭제하시겠습니까?")) {
-				var deptno = $("[name=deptno]").val()
-				location.href = "${path}/deptDelete?deptno=" + deptno;
+				var empno = $("[name=empno]").val()
+				location.href = "${path}/empDelete?empno=" + empno;
 			}
 		});
 	});
@@ -120,19 +115,66 @@ td {
 							<div class="input-group mb-0">
 								<div class="input-group-prepend ">
 									<span class="input-group-text  justify-content-center">
-										부서 번호</span>
+										사원 번호</span>
 								</div>
-								<input type="number" name="deptno" class="form-control" readonly
-									value="${dept.deptno}" />
+								<input type="number" name="empno" class="form-control" readonly
+									value="${emp.empno}" />
 							</div>
 
 							<div class="input-group mb-0">
 								<div class="input-group-prepend ">
 									<span class="input-group-text  justify-content-center">
-										부서 이름</span>
+										사원명</span>
 								</div>
-								<input type="text" name="dname" class="form-control"
-									value="${dept.dname}" />
+								<input type="text" name="ename" class="form-control"
+									value="${emp.ename}" />
+							</div>
+							<div class="input-group mb-0">
+								<div class="input-group-prepend ">
+									<span class="input-group-text  justify-content-center">
+										부서</span>
+								</div>
+								<select name="deptno" class="form-control">
+									<c:forEach var="dept" items="${dlist}">
+										<option value="${dept.deptno}">${dept.dname}
+											[${dept.deptno}]</option>
+									</c:forEach>
+								</select>
+								<script type="text/javascript">
+									$("[name=deptno]").val("${emp.deptno}")
+								</script>
+							</div>
+							<div class="input-group mb-0">
+								<div class="input-group-prepend ">
+									<span class="input-group-text  justify-content-center">
+										직책</span>
+								</div>
+								<select name="job" class="form-control">
+									<c:forEach var="job" items="${jobs}">
+										<option>${job}</option>
+									</c:forEach>
+								</select>
+								<script type="text/javascript">
+									// 선택해서 다시 모델 데이터를 받았을 때, 기본 selected를
+									// 설정할 때 처리..
+									$("[name=job]").val("${emp.job}")
+								</script>
+							</div>
+							<div class="input-group mb-0">
+								<div class="input-group-prepend ">
+									<span class="input-group-text  justify-content-center">
+										전화번호</span>
+								</div>
+								<input type="text" name="tel" class="form-control"
+									value="${emp.tel}" />
+							</div>
+							<div class="input-group mb-0">
+								<div class="input-group-prepend ">
+									<span class="input-group-text  justify-content-center">
+										이메일</span>
+								</div>
+								<input type="email" name="email" class="form-control"
+									value="${emp.email}" />
 							</div>
 
 
@@ -149,11 +191,11 @@ td {
 									</a> <a id="delBtn" class="btn btn-danger btn-icon-split"> <span
 										class="icon text-white-50"> <i class="fas fa-trash"></i>
 									</span> <span class="text">삭제하기</span>
-									</a> <a id="mainBtn" href="${path}/deptList.do"
+									</a> <a id="mainBtn" href="${path}/empList.do"
 										class="btn btn-secondary btn-icon-split"> <span
 										class="icon text-white-50"> <i
 											class="fas fa-arrow-right"></i>
-									</span> <span class="text">부서목록</span>
+									</span> <span class="text">사원목록</span>
 									</a>
 								</div>
 

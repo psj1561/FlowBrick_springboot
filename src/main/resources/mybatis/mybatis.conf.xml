@@ -4,17 +4,21 @@
 <configuration>
 	<typeAliases>
 		<typeAlias alias="emp" type="com.web.spring.vo.Emp" />
+		<typeAlias alias="empSch" type="com.web.spring.vo.EmpSch" />
 		<typeAlias alias="empInfo" type="com.web.spring.vo.EmpInfo" />
 		<typeAlias alias="dept" type="com.web.spring.vo.Dept" />
 		<typeAlias alias="deptSch" type="com.web.spring.vo.DeptSch" />
 		
 		
-		<typeAlias alias="humanresource" type="com.web.spring.vo.HumanResource"/>
 		<typeAlias alias="materialresource" type="com.web.spring.vo.MaterialResource"/>
+		<typeAlias alias="humanresource" type="com.web.spring.vo.HumanResource"/>
+		<typeAlias alias="databetweenrepandmr" type="com.web.spring.vo.DataBetweenRepAndMr"/>
 		
 		<typeAlias alias="projectSch" type="com.web.spring.vo.ProjectSch"/>
 		<typeAlias alias="projectBasic" type="com.web.spring.vo.ProjectBasic"/>
 		<typeAlias alias="projectTeam" type="com.web.spring.vo.ProjectTeam"/>
+		<typeAlias alias="teamMate" type="com.web.spring.vo.TeamMate"/>
+		<typeAlias alias="teamEmp" type="com.web.spring.vo.TeamEmp"/>
 		<typeAlias alias="repository" type="com.web.spring.vo.Repository"/>
 		
 		<typeAlias alias="risk" type="com.web.spring.vo.Risk"/>

@@ -10,13 +10,13 @@
 	</select>
 
 	<insert id="signUp"  parameterType="emp">
-		INSERT INTO FB_EMP(empno, ename, email, deptno, job) VALUES (fb_empno_seq.nextval, #{ename},#{email},#{deptno}, #{job} )
+		INSERT INTO FB_EMP(empno, ename, email, deptno, job) VALUES (emp_seq.nextval, #{ename},#{email},#{deptno}, #{job} )
 	</insert>
 
 
 	<select id="getEmpInfo" resultType="empInfo" parameterType="int">
 		SELECT empno, ename, dname, job, tel, email
-		FROM FB_EMP e left join dept d
+		FROM FB_EMP e left join FB_dept d
 		on e.deptno=d.deptno where empno=#{empno}
 	</select>
 	
@@ -71,7 +71,51 @@
 		SELECT count(*) FROM FB_dept WHERE deptno = #{deptno}
 	</select>
 
-
+	
+	<select id="totEmp" resultType="int" parameterType="empSch">
+		SELECT COUNT(*)
+		FROM FB_emp
+		WHERE 1=1
+		AND ename LIKE '%'||#{ename}||'%'
+	</select>
+	
+	<select id="empList" parameterType="empSch" resultType="emp">
+		SELECT *
+		FROM ( 
+			select rownum cnt, e.* 
+			from (
+				SELECT e.*, d.DNAME 
+				from FB_emp e
+				INNER JOIN fb_dept d ON e.deptno = d.deptno
+				and ename like '%'||#{ename}||'%'
+				order by empno
+			) e
+		)
+		where cnt BETWEEN #{start} AND#{end}
+	</select>
+	<select id="getEmp" parameterType="int" resultType="emp">
+		SELECT * FROM FB_emp WHERE empno = #{empno}
+	</select>
+	
+	<update id="empUpdate" parameterType="emp">
+		update FB_emp
+		set
+		ename=#{ename},
+		deptno=#{deptno},
+		job=#{job},
+		tel=#{tel},
+		email=#{email}
+		where empno = #{empno}
+	</update>
+	
+	<delete id="empDelete" parameterType="int">
+		delete
+		from FB_emp
+		where empno = #{empno}
+	</delete>
+	
+	
+	
 	
 	
 </mapper>	

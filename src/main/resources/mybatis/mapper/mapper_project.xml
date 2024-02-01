@@ -14,6 +14,7 @@
 		FROM projectbasic pb
 		WHERE prjname like '%'||#{prjName}||'%'
 	</select>
+
 	
 	<insert id="insertProjectBasic" parameterType="projectBasic">
 		INSERT INTO projectbasic VALUES(
@@ -26,16 +27,17 @@
 	</insert>
 	
 	<insert id="insertProjectTeam" parameterType="projectTeam">
-		INSERT INTO projecteam VALUES(
+		INSERT INTO projectteam VALUES(
 			team_seq.nextval, #{teamName}, prj_seq.currval
 		)
 	</insert>
 		
-	<insert id="insertTeam" parameterType="int">
+	<insert id="insertTeamMate" parameterType="int">
 		INSERT INTO teammate VALUES(
 			tm_seq.nextval, team_seq.currval, #{empno}, #{auth}
 		)
 	</insert>
+	
 	<!--
 	<select id="tmList" parameterType="">
 		SELECT tm.*, 

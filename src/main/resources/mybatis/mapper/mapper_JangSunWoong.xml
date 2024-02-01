@@ -130,10 +130,42 @@
 	
 
 	
+	
 	<select id="getRepositoryList" resultType="repository" parameterType="repository">
 		SELECT * FROM repository 
 		WHERE MATERIALRESOURCENAME LIKE '%'||#{materialresourcename}||'%'
+		order by repno
 	</select>
+	
+	<select id="getMRCnt" resultType="int" parameterType="int">
+		SELECT PRODUCTCNT 
+		FROM materialresource
+		WHERE materialresourceno=#{materialresourceno}
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+	<update id="transferToRepositoryStep1" parameterType="databetweenrepandmr">
+		UPDATE MATERIALRESOURCE 
+		SET PRODUCTCNT=PRODUCTCNT - #{cntInput}
+		WHERE MATERIALRESOURCENO=#{materialresourceno}
+	</update>
+	
+	<insert id="transferToRepositoryStep2" parameterType="databetweenrepandmr">
+	INSERT INTO REPOSITORY (repno,division,materialresourcename,repcnt,rentorbuy,facilityloc)
+	SELECT flowbrick_repno.nextval, m.division, m.MATERIALRESOURCENAME, #{cntInput}, m.RENTORBUY, m.FACILITYLOC 
+	FROM MATERIALRESOURCE m 
+	WHERE MATERIALRESOURCENO=#{materialresourceno}
+	</insert>
 
 
 	
