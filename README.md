@@ -19,7 +19,7 @@
 
 ## 기술 스택
 
-| JavaScript | JAVA       |  Html    |  CSS   |  Oracle   |  Oracle   |
+| JavaScript | JAVA       |  Html    |  CSS   |  Oracle   |  SpringBoot   |
 | :--------: | :--------: | :------: | :-----: |:-----: |:-----: |
 |   ![js]    |   <img src="/images/stack/java.png" width="100" height="100">  | ![html] | ![css] | <img src="/images/stack/oracle.png" width="100" height="100"> | ![spring] |
 
