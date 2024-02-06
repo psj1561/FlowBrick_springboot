@@ -6,13 +6,18 @@
 	<select id="cntProject" resultType="int" parameterType="projectSch">
 		SELECT COUNT(*)
 		FROM projectbasic
-		WHERE 1=1
-		AND prjname LIKE '%'||#{prjName}||'%'
+		WHERE prjname LIKE '%'||#{prjName}||'%'
 	</select>
 	<select id="projectList" parameterType="projectSch" resultType="projectBasic">
-		SELECT rownum cnt, pb.*
-		FROM projectbasic pb
-		WHERE prjname like '%'||#{prjName}||'%'
+		SELECT *
+		FROM ( SELECT rownum cnt, pb.*
+				FROM (
+					  SELECT *
+					  FROM PROJECTBASIC
+					  WHERE prjname LIKE '%'||#{prjName}||'%'
+					  ORDER BY prjno) pb
+				)
+		WHERE cnt BETWEEN #{startNo} AND #{endNo}
 	</select>
 
 	
@@ -32,7 +37,7 @@
 		)
 	</insert>
 		
-	<insert id="insertTeamMate" parameterType="int">
+	<insert id="insertTeamMate" parameterType="teamMate">
 		INSERT INTO teammate VALUES(
 			tm_seq.nextval, team_seq.currval, #{empno}, #{auth}
 		)

@@ -169,4 +169,36 @@
 
 
 	
+
+
+	
+	<update id="transferToMaterialResourceStep1" parameterType="databetweenmrandrep">
+		UPDATE REPOSITORY 
+		SET repcnt=repcnt - #{cntInputRepToMr}
+		WHERE repno=#{repno}
+	</update>
+	
+	<insert id="transferToMaterialResourceStep2" parameterType="databetweenmrandrep">
+		INSERT INTO MATERIALRESOURCE (materialresourceno,prjno,prjname,rentorbuy,price,materialresourcename,productcnt,facilityloc,division)
+		SELECT flowbrick_materialresource.nextval, #{prjNo}, #{prjname}, r.rentorbuy, 0, r.materialresourcename, #{cntInputRepToMr}, r.facilityloc,r.division
+		FROM REPOSITORY r 
+		WHERE repno=#{repno}
+	</insert>
+	
+	<select id="getRepCnt" resultType="int" parameterType="int">
+		SELECT repcnt 
+		FROM REPOSITORY 
+		WHERE repno=#{repno}
+	</select>
+	 
+
+	<delete id="deleteZeroCntMR">
+		DELETE from materialresource WHERE productcnt=0
+	</delete>
+
+	
+	<delete id="deleteZeroCntRepository">
+		DELETE FROM REPOSITORY r WHERE repcnt=0
+	</delete>
+	
 </mapper>	

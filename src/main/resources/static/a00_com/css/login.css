@@ -54,3 +54,7 @@ font-size: .8rem;
 .card-header{
 	border-bottom: 0;
 }
+
+.table td{
+	text-align: center;
+}

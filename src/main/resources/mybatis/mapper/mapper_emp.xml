@@ -9,94 +9,109 @@
 		FB_EMP WHERE empno=#{empno} AND password=#{password}
 	</select>
 
-	<insert id="signUp"  parameterType="emp">
-		INSERT INTO FB_EMP(empno, ename, email, deptno, job) VALUES (emp_seq.nextval, #{ename},#{email},#{deptno}, #{job} )
+	<insert id="signUp" parameterType="emp">
+		INSERT INTO FB_EMP(empno,
+		ename, email, deptno, job, password) VALUES (emp_seq.nextval,
+		#{ename},#{email},#{deptno}, #{job}, #{password})
 	</insert>
 
 
 	<select id="getEmpInfo" resultType="empInfo" parameterType="int">
 		SELECT empno, ename, dname, job, tel, email
-		FROM FB_EMP e left join FB_dept d
+		FROM FB_EMP e left join
+		FB_dept d
 		on e.deptno=d.deptno where empno=#{empno}
 	</select>
-	
-	
+
+
 	<update id="updateEmpInfo" parameterType="emp">
-		UPDATE FB_EMP set tel=#{tel} where empno = #{empno}
+		UPDATE FB_EMP set
+		tel=#{tel} where empno = #{empno}
 	</update>
 
 	<insert id="insertDept" parameterType="dept">
-		INSERT INTO FB_dept(deptno, dname) VALUES (#{deptno},#{dname})
+		INSERT INTO
+		FB_dept(deptno, dname) VALUES (#{deptno},#{dname})
 	</insert>
 
 	<select id="totDept" resultType="int" parameterType="deptSch">
-		SELECT COUNT(*)
+		SELECT
+		COUNT(*)
 		FROM FB_dept
 		WHERE 1=1
 		AND dname LIKE '%'||#{dname}||'%'
 	</select>
-	
+
 	<select id="deptList" parameterType="deptSch" resultType="dept">
-		select * 
+		select
+		*
 		from (
-			select rownum cnt, d.*
-			from FB_dept d
-			where 1=1
-			and dname like '%'||#{dname}||'%'
-			order by deptno
+		select rownum cnt, d.*
+		from FB_dept d
+		where 1=1
+		and dname like
+		'%'||#{dname}||'%'
+		order by deptno
 		)
-		where cnt BETWEEN #{start} AND #{end}
+		where cnt BETWEEN #{start} AND
+		#{end}
 	</select>
-	
-	
+
+
 	<select id="getDept" parameterType="int" resultType="dept">
-		SELECT * FROM FB_dept WHERE deptno = #{deptno}
+		SELECT *
+		FROM FB_dept WHERE deptno = #{deptno}
 	</select>
-	
+
 	<update id="deptUpdate" parameterType="dept">
 		update FB_dept
 		set
 		dname=#{dname}
 		where deptno = #{deptno}
 	</update>
-	
+
 	<delete id="deptDelete" parameterType="int">
 		delete
 		from FB_dept
-		where deptno = #{deptno}
+		where
+		deptno = #{deptno}
 	</delete>
-	
-		
+
+
 	<select id="checkDupDeptno" parameterType="int" resultType="int">
 		SELECT count(*) FROM FB_dept WHERE deptno = #{deptno}
 	</select>
 
-	
+
 	<select id="totEmp" resultType="int" parameterType="empSch">
-		SELECT COUNT(*)
+		SELECT
+		COUNT(*)
 		FROM FB_emp
 		WHERE 1=1
 		AND ename LIKE '%'||#{ename}||'%'
 	</select>
-	
+
 	<select id="empList" parameterType="empSch" resultType="emp">
 		SELECT *
-		FROM ( 
-			select rownum cnt, e.* 
-			from (
-				SELECT e.*, d.DNAME 
-				from FB_emp e
-				INNER JOIN fb_dept d ON e.deptno = d.deptno
-				and ename like '%'||#{ename}||'%'
-				order by empno
-			) e
+		FROM (
+		select rownum cnt, e.*
+		from (
+		SELECT e.*, d.DNAME
+		from FB_emp e
+		INNER JOIN fb_dept d ON e.deptno = d.deptno
+		and ename like
+		'%'||#{ename}||'%'
+		order by empno
+		) e
 		)
-		where cnt BETWEEN #{start} AND#{end}
+		where cnt BETWEEN #{start}
+		AND#{end}
 	</select>
 	<select id="getEmp" parameterType="int" resultType="emp">
-		SELECT * FROM FB_emp WHERE empno = #{empno}
+		SELECT * FROM
+		FB_emp WHERE empno = #{empno}
 	</select>
-	
+
 	<update id="empUpdate" parameterType="emp">
 		update FB_emp
 		set
@@ -107,15 +122,26 @@
 		email=#{email}
 		where empno = #{empno}
 	</update>
-	
+
 	<delete id="empDelete" parameterType="int">
 		delete
 		from FB_emp
-		where empno = #{empno}
+		where
+		empno = #{empno}
 	</delete>
-	
-	
-	
-	
-	
+
+
+	<select id="getEmpno" parameterType="emp" resultType="int">
+		SELECT
+		empno FROM
+		FB_emp WHERE ename = #{ename} AND email=#{email}
+	</select>
+
+	<!-- <update id="updateTempPw" parameterType="emp">
+		update FB_emp
+		set
+		password=#{password}
+		where empno = #{empno} AND ename=#{ename}
+	</update> -->
+
 </mapper>	
