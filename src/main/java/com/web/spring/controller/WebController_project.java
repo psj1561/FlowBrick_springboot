@@ -10,11 +10,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.web.spring.service.WebService_project;
 import com.web.spring.vo.Emp;
+import com.web.spring.vo.InsertProjectRequest;
 import com.web.spring.vo.ProjectBasic;
 import com.web.spring.vo.ProjectPaging;
 import com.web.spring.vo.ProjectSch;
@@ -73,8 +75,8 @@ public class WebController_project {
 	}
 
 	@PostMapping("insertProject")
-	public String insertProject(ProjectBasic pb, ProjectTeam pt, List<TeamMate> tm, Model d) {
-		d.addAttribute("msg", service.insertProject(pb, pt, tm));
+	public String insertProject(InsertProjectRequest request, Model d) {
+		d.addAttribute("msg", service.insertProject(request));
 		return "pageJsonReport";
 	}
 

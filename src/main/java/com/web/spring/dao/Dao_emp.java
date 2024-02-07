@@ -68,8 +68,8 @@ public interface Dao_emp {
 	@Select("SELECT DISTINCT job from fb_emp order by job")
 	List<String> getJobs();
 
-	// 사원번호 가져오기
-	int getEmpno(Emp emp);
+	// 사원정보 가져오기
+	Emp getEnameAndEmailBygetEmp(Emp emp);
 	/*
 	 * // 임시비밀번호 저장 int updateTempPw(Emp upt);
 	 */

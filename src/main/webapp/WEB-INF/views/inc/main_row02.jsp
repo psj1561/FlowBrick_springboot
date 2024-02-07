@@ -77,8 +77,8 @@
 									<div
 										class="text-lg font-weight-bold text-primary text-uppercase mb-4">
 										<c:choose>	
-										<c:when test="${fn:length(prj.prjName) > 18}">
-										    <c:set var="prjN" value="${fn:substring(prj.prjName, 0, 18 > fn:length(prj.prjName) ? fn:length(prj.prjName) : 18)}" />
+										<c:when test="${fn:length(prj.prjName) > 16}">
+										    <c:set var="prjN" value="${fn:substring(prj.prjName, 0, 16 > fn:length(prj.prjName) ? fn:length(prj.prjName) : 16)}" />
 										    ${prjN}..
 										</c:when>
 										<c:otherwise>
@@ -124,7 +124,7 @@
 									<i class="fas fa-exclamation fa-2x text-gray-800"></i>
 								</div>
 								<div class="">
-									<div class="h6 mb-0 font-weight-bold text-gray-800">이슈</div>
+									<div class="h6 mb-0 font-weight-bold text-gray-800">리스크 ${prj.risk}</div>
 								</div>		
 							</div>
 						</div>
@@ -172,15 +172,15 @@
 				<canvas id="myPieChart"></canvas>
 			</div>
 			<div class="mt-4 text-center small">
-				<span class="mr-2"> <i class="fas fa-circle text-success"></i>
+				<span class=""> <i class="fas fa-circle text-success"></i>
 					완료 [${prj_chart.complete}]
-				</span> <span class="mr-2"> <i class="fas fa-circle text-primary"></i>
+				</span> <span class=""> <i class="fas fa-circle text-primary"></i>
 					개발 [${prj_chart.develop}]
-				</span> <span class="mr-2"> <i class="fas fa-circle text-info"></i>
+				</span> <span class=""> <i class="fas fa-circle text-info"></i>
 					테스트 [${prj_chart.test}]
-				</span> <span class="mr-2"> <i class="fas fa-circle text-warning"></i>
+				</span> <span class=""> <i class="fas fa-circle text-warning"></i>
 					디버그 [${prj_chart.debug}]
-				</span><span class="mr-2"> <i class="fas fa-circle text-danger"></i>
+				</span><span class=""> <i class="fas fa-circle text-danger"></i>
 					설계 [${prj_chart.design}]
 				</span>
 			</div>

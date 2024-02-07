@@ -43,10 +43,10 @@ public class WebService_notice {
 		
 		sch.setBlockSize(5);
 		
-		System.out.println("현재 페이지 번호");
-		System.out.println(sch.getCurPage());
-		System.out.println("블럭의 크기");
-		System.out.println(sch.getBlockSize());
+		//System.out.println("현재 페이지 번호");
+		//System.out.println(sch.getCurPage());
+		//System.out.println("블럭의 크기");
+		//System.out.println(sch.getBlockSize());
 		int blockNum = (int)Math.ceil(sch.getCurPage()/
 				(double)sch.getBlockSize());
 
@@ -57,11 +57,11 @@ public class WebService_notice {
 		}
 
 		sch.setStartBlock((blockNum-1)*sch.getBlockSize()+1);
-		System.out.println(blockNum);
-		System.out.println(sch.getBlockSize());
+		//System.out.println(blockNum);
+		//System.out.println(sch.getBlockSize());
 		
-		System.out.println("## 시작 블럭 크기 #");
-		System.out.println(sch.getStartBlock());
+		//System.out.println("## 시작 블럭 크기 #");
+		//System.out.println(sch.getStartBlock());
 		
 		return dao.noticeList(sch);
 	} 

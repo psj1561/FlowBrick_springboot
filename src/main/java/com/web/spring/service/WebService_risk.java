@@ -2,6 +2,7 @@ package com.web.spring.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +12,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.web.spring.dao.Dao_notice;
 import com.web.spring.dao.Dao_risk;
+import com.web.spring.vo.Emp;
 import com.web.spring.vo.Notice;
 import com.web.spring.vo.NoticeFile;
 import com.web.spring.vo.NoticeSch;
+import com.web.spring.vo.ProjectBasic;
 import com.web.spring.vo.Risk;
 import com.web.spring.vo.RiskFile;
 import com.web.spring.vo.RiskSch;
+
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class WebService_risk {
@@ -54,6 +59,23 @@ public class WebService_risk {
 		sch.setStartBlock((blockNum-1)*sch.getBlockSize()+1);
 		return dao.riskList(sch);
 	} 
+	
+    public List<ProjectBasic> getProject(HttpSession session) {
+        // 세션에서 empno 값을 가져옵니다.
+    	Emp empnoObject = new Emp();
+        empnoObject = (Emp)session.getAttribute("empResult");
+     
+        // empno 값이 null인지 확인합니다.
+        if (empnoObject != null) {
+            int empno = empnoObject.getEmpno();
+            
+            // service의 getProject 메서드를 호출하여 프로젝트 목록을 가져옵니다.
+            return dao.getProject(empno);
+        } else {
+            // empno 값이 null이면 빈 리스트를 반환합니다.
+            return new ArrayList<>();
+        }
+    }
 	
 	@Value("${riskFile.upload}")
 	private String path;

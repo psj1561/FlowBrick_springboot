@@ -36,7 +36,6 @@ public interface Dao_project {
 	
 	public List<TeamMate> tmList(TeamMate sch);
 	
-	
 }
 
 

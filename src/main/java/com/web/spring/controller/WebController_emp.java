@@ -38,10 +38,7 @@ public class WebController_emp {
 	@RequestMapping("login.do")
 	public String login(Emp emp, HttpSession session) {
 		Emp empResult = service.login(emp);
-		System.out.println("데이터 check:");
-		System.out.println(empResult);
 		if (empResult != null) {
-			System.out.println("DB 속성:" + empResult.getEname());
 			session.setAttribute("empResult", empResult);
 		}
 		return "login";
@@ -68,11 +65,12 @@ public class WebController_emp {
 		// 1. 회원 등록
 		String signUpResult = service.signUp(emp);
 		d.addAttribute("msg", signUpResult);
-
+	
 		// 2. 회원 등록이 성공했을 경우에만 이메일 발송
 		if ("등록성공".equals(signUpResult)) {
 			d.addAttribute("emailMsg", service.sendMail(emp));
 		}
+
 		return "signUp";
 	}
 

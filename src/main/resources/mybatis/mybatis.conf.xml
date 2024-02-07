@@ -20,6 +20,7 @@
 		<typeAlias alias="projectBasic" type="com.web.spring.vo.ProjectBasic"/>
 		<typeAlias alias="projectTeam" type="com.web.spring.vo.ProjectTeam"/>
 		<typeAlias alias="projectPaging" type="com.web.spring.vo.ProjectPaging"/>
+		<typeAlias alias="insertProjectRequest" type="com.web.spring.vo.InsertProjectRequest"/>		
 				
 		<typeAlias alias="teamMate" type="com.web.spring.vo.TeamMate"/>
 		<typeAlias alias="teamEmp" type="com.web.spring.vo.TeamEmp"/>

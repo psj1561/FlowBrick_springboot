@@ -131,9 +131,8 @@
 	</delete>
 
 
-	<select id="getEmpno" parameterType="emp" resultType="int">
-		SELECT
-		empno FROM
+	<select id="getEnameAndEmailBygetEmp" parameterType="emp" resultType="emp">
+		SELECT * FROM
 		FB_emp WHERE ename = #{ename} AND email=#{email}
 	</select>
 

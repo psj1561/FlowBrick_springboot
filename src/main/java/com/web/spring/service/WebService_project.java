@@ -5,10 +5,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.web.spring.dao.Dao_project;
 import com.web.spring.vo.Emp;
+import com.web.spring.vo.InsertProjectRequest;
 import com.web.spring.vo.ProjectBasic;
 import com.web.spring.vo.ProjectSch;
 import com.web.spring.vo.ProjectTeam;
@@ -56,34 +59,30 @@ public class WebService_project {
 	}
 	
 	// 프로젝트, 팀, 팀원 등록
-	public String insertProject(ProjectBasic pb, ProjectTeam pt, List<TeamMate> tm) {
-	    String msg = "";
-	    // 프로젝트 기본 정보 등록
-	    int pbIns = dao.insertProjectBasic(pb);
-	    msg += (pbIns > 0) ? "기본정보 등록 성공\n" : "등록 실패\n";
-	    // 프로젝트 팀 등록
-	    int ptIns = dao.insertProjectTeam(pt);
-	    msg += ptIns + "개의 팀 등록 완료\n";
-	    // 팀원 등록
-	    int tmCount = 0;
-	    /*
-	    for (String empkeys : empno) {
-			String[] keys = empkeys.replace(" ", "").split(",");
-			for(String key: keys) {
-				int empkey = Integer.parseInt(key);
-				int tmIns = dao.insertTeamMate(key,)
-			}
-	    }
-	    */
-	    for (TeamMate teamMate : tm) {
-	        int tmIns = dao.insertTeamMate(teamMate);
-	        if (tmIns > 0) {
-	            tmCount++;
-	        }
-	    }
-	    msg += tmCount + "명의 팀원 등록 완료";
-	    return msg;
-	}
+    public String insertProject(InsertProjectRequest request) {
+        String msg = "";
+
+        // 프로젝트 기본 정보 등록
+        int pbIns = dao.insertProjectBasic(request.getProjectBasic());
+        msg += (pbIns > 0) ? "기본정보 등록 성공\n" : "등록 실패\n";
+
+        // 프로젝트 팀 등록
+        int ptIns = dao.insertProjectTeam(request.getProjectTeam());
+        msg += ptIns + "개의 팀 등록 완료\n";
+
+        // 팀원 등록
+        int tmCount = 0;
+        for (TeamMate teamMate : request.getTeamMateList()) {
+            int tmIns = dao.insertTeamMate(teamMate);
+            if (tmIns > 0) {
+                tmCount++;
+            }
+        }
+        msg += tmCount + "명의 팀원 등록 완료";
+
+        return msg;
+    }
+
 	
 	public String insertProjectBasic(ProjectBasic ins) {
 		String msg = dao.insertProjectBasic(ins)>0?"기본정보 등록성공":"등록 실패";

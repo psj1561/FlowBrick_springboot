@@ -51,20 +51,7 @@ input[type=file]::file-selector-button {
 	overflow-y: auto;
 	text-align: left;
 	border: 0.5px solid green;
-	font-size: 20px;
 }
-
-.img_file{
-	width: 40px;
-	height: 45px;
-}
-
-.form_c{
-    font-size: 20px;
-    margin: auto;
-    width: 98%;
-}
-
 </style>
 
 <script src="${path}/a00_com/jquery.min.js"></script>
@@ -114,117 +101,99 @@ input[type=file]::file-selector-button {
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
-				<form method="post" enctype="multipart/form-data" action="${path}/insertRisk">
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                        	<!--  
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-                            -->
+                        	<h6 class="m-0 font-weight-bold text-primary">리스크 등록</h6>
                         </div>
-                        <div class="card-body bg-gray-200 contents">
-                            <h3 class="h4 mb-2 text-gray-800 font-weight-bold">리스크명*</h3>
- 								<input type="text" class="h3 mb-2 text-gray-800 form-control form_c bg-light"
-									placeholder="리스크명" aria-label="Search"
-									aria-describedby="basic-addon2" name="riskName"/>
-                            <div class="d-sm-flex justify-content-between">
-                           		<input type="hidden" name="writer" class="form-control" value="${empResult.empno}" />
-                           		<h4 class="h4 mb-2 text-gray-800 font-weight-bold">내용</h4>
-                           		<input type="text" name="writer" class="form-control" value="${empResult.empno}" />
-                            </div>
-                        	<div class="contents">
-                        		<h4 class="h4 mb-2 text-gray-800 font-weight-bold">내용</h4>
-                        		<textarea id="chatArea" name="content" class="form-control"></textarea>
-                        	</div>
-                        </div>
-                    </div>
-					<div class="input-group mb-3">	
-						<div class="input-group-prepend ">
-							<span class="input-group-text  justify-content-center">
-								프로젝트명*</span>
-						</div>
-						<input type="hidden" name="prjNo" class="form-control" value="${risk.prjNo}"/>	
-						<input name="prjName" class="form-control" value="${risk.prjName }" disabled="disabled"/>	
-					</div>	
-					
-					<div class="input-group mb-3">	
-						<div class="input-group-prepend ">
-							<span class="input-group-text  justify-content-center">
-								작성자(*)</span>
-						</div>
-						<input type="hidden" name="empno" class="form-control" value="${empResult.empno}"/>	
-						<input type="text" name="writer" class="form-control" value="${empResult.ename}" disabled="disabled"/>	
-						<!-- 
-						session값에 있는 id로 작성자를 자동등록하게 처리.
-						==> 수정삭제시에 현재 로그인한 session의 id와 작성자의 id가 
-						동일할 때만 수정/삭제처리 가능하게 한다.
-						-->	
-					</div>	
-					
-					<div class="input-group mb-3">	
-						<div class="input-group-prepend ">
-							<span class="input-group-text  justify-content-center">
-								리스크명*</span>
-						</div>	
-						<input name="riskName" class="form-control" value=""/>	
-					</div>	
-					
-					<div class="input-group mb-3">	
-						<div class="input-group-prepend ">
-							<span class="input-group-text  justify-content-center">
-								첨부파일</span>
-						</div>
-						<input type="file" name="reports" multiple="multiple" class="form-control" value="" />	
-					</div>	
-						
-					<div class="input-group mb-3">	
-						<div class="input-group-prepend ">
-							<span class="input-group-text  justify-content-center">
-								리스크 내용</span>
-						</div>
-						<textarea id="chatArea" name="riskContent" class="form-control" ></textarea>	
-					</div>
-                    <!-- 첨부파일 -->
-					<div class="card shadow mb-4">
-						<div class="card-header py-3">
-							<h6 class="form_c m-0 font-weight-bold text-primary">첨부파일</h6>
-						</div>
-						<div class="card-body d-sm-flex">
-							<img class="img_file" src="${path}/a00_com/img/file_icon.png">&nbsp&nbsp
-							  
-							<input id="input-file" type="file" class="h3 mb-2 text-gray-800 form-control form_c bg-light"
-									aria-label="Search" aria-describedby="basic-addon2" name="reports"
-									multiple/>
-							<!--
-							<div class="input-group mb-3">
-								<input id="input-file" type="file" name="reports"
-									multiple />
-							</div>
-							-->	
-						</div>
-					</div>
-					<!-- 버튼 div -->
-					<div class="my-2"></div>
-						<div class="d-sm-flex justify-content-between">
-							<div></div>
-
-							<div>
-								<a id="regBtn" class="btn btn-success btn-icon-split"> <span
-									class="icon text-white-50"> <i
-										class="fas fa-arrow-right"></i>
-								</span> <span class="text">등록하기</span>
-								</a> 
+                        <div class="card-body">
+							<form method="post" enctype="multipart/form-data" action="${path}/insertRisk">
+								<div class="input-group mb-3">	
+									<div class="input-group-prepend ">
+										<span class="input-group-text  justify-content-center">
+											프로젝트명*</span>
+									</div>
+									<select name="prjNo" class="form-control">
+										<option value="">프로젝트 선택</option>
+										<c:forEach var="proj" items="${projectList}">
+											<option value="${proj.prjNo}">${proj.prjName}</option>
+										</c:forEach>
+									</select>	
+								</div>	
 								
-								<a href="${path}/notice.do"
-									class="btn btn-secondary btn-icon-split"> <span
-									class="icon text-white-50"> <i
-										class="fas fa-arrow-right"></i>
-								</span> <span class="text">목록으로</span>
-								</a>
+								<div class="input-group mb-3">	
+									<div class="input-group-prepend ">
+										<span class="input-group-text  justify-content-center">
+											작성자(*)</span>
+									</div>
+									<input type="hidden" name="empno" class="form-control" value="${empResult.empno}"/>	
+									<input type="text" name="writer" class="form-control" value="${empResult.ename}" disabled="disabled"/>	
+									<!-- 
+									session값에 있는 id로 작성자를 자동등록하게 처리.
+									==> 수정삭제시에 현재 로그인한 session의 id와 작성자의 id가 
+									동일할 때만 수정/삭제처리 가능하게 한다.
+									-->	
+								</div>	
+								
+								<div class="input-group mb-3">	
+									<div class="input-group-prepend ">
+										<span class="input-group-text  justify-content-center">
+											리스크명*</span>
+									</div>	
+									<input name="riskName" class="form-control" value=""/>	
+									<div class="input-group-prepend ">
+										<span class="input-group-text  justify-content-center">
+											위험도*</span>
+									</div>	
+									<select name="dangerStep" class="form-control">
+										<option value="">선택</option>
+										<option>매우 낮음</option>
+										<option>낮음</option>
+										<option>보통</option>
+										<option>높음</option>
+										<option>매우 높음</option>
+									</select>	
+								</div>	
+								
+								<div class="input-group mb-3">	
+									<div class="input-group-prepend ">
+										<span class="input-group-text  justify-content-center">
+											첨부파일</span>
+									</div>
+									<input type="file" name="reports" multiple="multiple" class="form-control" value="" />	
+								</div>	
+									
+								<div class="input-group mb-3">	
+									<div class="input-group-prepend ">
+										<span class="input-group-text  justify-content-center">
+											리스크 내용</span>
+									</div>
+									<textarea id="chatArea" name="riskContent" class="form-control" ></textarea>	
+								</div>
+							</form>
+							<!-- 버튼 div -->
+							<div class="my-2"></div>
+							<div class="d-sm-flex justify-content-between">
+								<div></div>
+	
+								<div>
+									<a id="regBtn" class="btn btn-primary btn-icon-split"> <span
+										class="icon text-white-50"> <i
+											class="fas fa-arrow-right"></i>
+									</span> <span class="text">등록하기</span>
+									</a> 
+									
+									<a href="${path}/riskList"
+										class="btn btn-secondary btn-icon-split"> <span
+										class="icon text-white-50"> <i
+											class="fas fa-arrow-right"></i>
+									</span> <span class="text">목록으로</span>
+									</a>
+								</div>
 							</div>
 						</div>
-					</form>
-					
+                    </div>
+
 				</div>
 				<!-- /.container-fluid -->
 			</div>

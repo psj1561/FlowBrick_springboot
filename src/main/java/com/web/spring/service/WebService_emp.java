@@ -42,9 +42,9 @@ public class WebService_emp {
 
 	public String sendMail(Emp emp) {
 		String emailMsg = "";
-		// 사원번호 가져오기
-		int empno = dao.getEmpno(emp);
-		emp.setEmpno(empno);
+		// 사원정보가져오기
+		Emp empInfo = dao.getEnameAndEmailBygetEmp(emp); 
+		 
 		// 1. 메일 발송 데이터 전송을 위한 객체 생성.
 		MimeMessage mmsg = sender.createMimeMessage();
 		MimeMessageHelper helper;
@@ -52,11 +52,12 @@ public class WebService_emp {
 			helper = new MimeMessageHelper(mmsg, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
 					StandardCharsets.UTF_8.name());
 
-			helper.setTo(emp.getEmail()); // 받는사람
+			helper.setTo(empInfo.getEmail()); // 받는사람
 			helper.setSubject("FlowBrick 사원번호와 임시비밀번호 전달 건"); // 메일제목
 			String message = "";
-			message += emp.getEname() + "님의 사원번호는 " + emp.getEmpno() + " 입니다<br>";
-			message += "임시비밀번호는 " + emp.getPassword() + " 입니다";
+			message += empInfo.getEname() + "님의 사원번호는 " + empInfo.getEmpno() + " 입니다<br>";
+			
+			message += "임시비밀번호는 " + empInfo.getPassword() + " 입니다";
 			helper.setText(message, true); // ture넣을경우 html
 
 			// 4) 발송처리..

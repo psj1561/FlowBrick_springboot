@@ -47,7 +47,8 @@
 					aria-labelledby="headingPages" data-parent="#accordionSidebar">
 					<div class="bg-white py-2 collapse-inner rounded">
 						<h6 class="collapse-header">내 프로젝트</h6>
-						<a class="collapse-item" href="${path}/projectList">프로젝트 리스트</a> 
+						<a class="collapse-item" href="${path}/projectList">프로젝트 리스트</a>
+						<a class="collapse-item" href="${path}/riskList">리스크 리스트</a>
 					</div>
 				</div></li>
 				

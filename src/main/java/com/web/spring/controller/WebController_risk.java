@@ -25,6 +25,8 @@ import com.web.spring.vo.RiskSch;
 import com.web.spring.vo.TeamEmp;
 import com.web.spring.vo.TeamMate;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class WebController_risk {
 	@Autowired(required = false)
@@ -37,10 +39,16 @@ public class WebController_risk {
 		return "risk_list";
 	}
 	
+	// http://localhost:2222/insertRiskFrm
 	@RequestMapping("insertRiskFrm")
 	public String insertRiskFrm(Risk risk) {
 		return "risk_insert";
 	}
+	
+    @ModelAttribute("projectList")
+    public List<ProjectBasic> getProjectList(HttpSession session) {
+    	return service.getProject(session);
+    }
 	
 	@PostMapping("insertRisk")
 	public String insertRisk(Risk ins, Model d) {

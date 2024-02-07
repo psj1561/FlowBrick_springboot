@@ -32,7 +32,7 @@
 	<insert id="insertRisk" parameterType="risk">
 		INSERT INTO risk VALUES(
 			risk_seq.nextval, #{prjNo}, #{empNo}, #{riskName}, #{riskContent},
-			#{dangerStep}, to_date(#{uploadDateStr}, 'YYYY-MM-DD'), #{state}
+			#{dangerStep}, SYSDATE, SYSDATE, '진행중'
 		)
 	</insert>
 	<insert id="insertRiskFile" parameterType="riskFile">

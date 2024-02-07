@@ -36,7 +36,7 @@ public class WebController_JangSunWoong {
 	
 	
 	
-	//http://localhost:7080/pms/uptPrjBasic.do
+
 	// 프로젝트 수정처리
 	@RequestMapping("uptPrjBasic.do")
 	public String uptPrjBasic(ProjectBasic upt, Model d) {
@@ -246,9 +246,7 @@ public class WebController_JangSunWoong {
 		return "pageJsonReport";
 	}
 	
-	
-	
-	
+
 	@RequestMapping("transferToMaterialResource.do")
 	public String transferToMaterialResource(DataBetweenMrAndRep dbmar, Model d) {
 		d.addAttribute("msg","실패 : 보유 자원 갯수를 초과합니다.");
@@ -262,6 +260,10 @@ public class WebController_JangSunWoong {
 		return "pageJsonReport";
 	}
 	
+	// http://localhost:2222/gantt.do
+	@RequestMapping("gantt.do")
+	public String gantt() {
+		return "j06_ganttChart";
+	}
 }
-
 

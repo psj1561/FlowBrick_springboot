@@ -21,7 +21,6 @@
 <link href="${path}/a00_com/css/sb-admin-2.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style type="text/css">
-        /* 기본적인 스타일링 */
         .custom-file-input {
             display: inline-block;
             cursor: pointer;
@@ -170,7 +169,8 @@
 											<c:when test="${empty notice.fnames}">파일을 선택하세요</c:when>
 											<c:otherwise>
 												<c:forEach var="fname" items="${notice.fnames}">
-													<span calss="font weight-bold" role="button">${fname} </span><i role="button" class="fa fa-remove" onclick="removeFile('${fname}')"></i>
+													<span calss="font weight-bold" role="button">${fname} </span>
+													<i role="button" class="fa fa-remove text-danger" onclick="removeFile('${fname}')"></i>
 												</c:forEach>
 											</c:otherwise>
 										</c:choose>
@@ -178,7 +178,7 @@
 								</div>				
 						</div>
 						<script type="text/javascript">
-						function displayFileNames() {
+						function displayFileNames() { // 업로드한 파일을 선택했을때 표시하는 함수
 						    const input = document.getElementById('customFile');
 						    const label = document.querySelector('.custom-file-label');
 						    const files = input.files;
@@ -210,8 +210,9 @@
 						    }
 						}
 					    function removeFile(fname) {
-					    	alert(fname+"을삭제합니다")
-							location.href="${path}/deleteFile.do?fname="+fname+"&no="+${notice.no}
+					    	if(confirm(fname+"을 삭제하시겠습니까?")){
+					    		location.href="${path}/deleteFile.do?fname="+fname+"&no="+${notice.no}
+					    	}		   		
 						}
 					    </script>
 					</div>
