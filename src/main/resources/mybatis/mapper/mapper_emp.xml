@@ -130,17 +130,25 @@
 		empno = #{empno}
 	</delete>
 
-
-	<select id="getEnameAndEmailBygetEmp" parameterType="emp" resultType="emp">
-		SELECT * FROM
-		FB_emp WHERE ename = #{ename} AND email=#{email}
-	</select>
-
 	<!-- <update id="updateTempPw" parameterType="emp">
 		update FB_emp
 		set
 		password=#{password}
 		where empno = #{empno} AND ename=#{ename}
 	</update> -->
+	
+	<!-- 이메일로 사원번호 존재 여부 찾기 -->
+	<select id="checkEmpno" parameterType="string" resultType="int">
+		SELECT count(empno) FROM
+		FB_emp WHERE email=#{email}
+	</select>
+	
+	
+	<!-- 이메일로 사원정보 가져오기 (회원가입시 메일발송 / 계정찾기시 메일발송) -->
+	<select id="getEmpByEmail" parameterType="string" resultType="emp">
+		SELECT * FROM
+		FB_emp WHERE email=#{email}
+	</select>
+	
 
 </mapper>	

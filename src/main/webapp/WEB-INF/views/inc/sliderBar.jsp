@@ -48,7 +48,7 @@
 					<div class="bg-white py-2 collapse-inner rounded">
 						<h6 class="collapse-header">내 프로젝트</h6>
 						<a class="collapse-item" href="${path}/projectList">프로젝트 리스트</a>
-						<a class="collapse-item" href="${path}/riskList">리스크 리스트</a>
+						<a class="collapse-item" href="${path}/riskList">리스크</a>
 					</div>
 				</div></li>
 				
@@ -90,8 +90,7 @@
 						</c:if>
 						<c:if test="${empResult.auth=='관리자'}">
 							<h6 class="collapse-header">프로젝트관리</h6>
-							<a class="collapse-item" href="${path}/maintenanceFrm.do">프로젝트목록</a>
-							<a class="collapse-item" href="${path}/maintenanceFrm.do">리스크 승인대기</a>
+							<a class="collapse-item" href="${path}/riskManage.do">리스크 승인대기</a>
 						</c:if>
 					</div>
 				</div></li>			

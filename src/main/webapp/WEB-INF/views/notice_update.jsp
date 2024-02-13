@@ -193,7 +193,7 @@
 						        });
 
 						        // 마지막 쉼표 제거 후 레이블에 파일명과 크기 표시
-						        label.innerHTML += "<span role='button'> " + fileDetails.slice(0, -2) + " </span>";
+						        label.innerHTML = "<span role='button'> " + fileDetails.slice(0, -2) + " </span>";
 						    }
 						}
 						

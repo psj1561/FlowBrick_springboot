@@ -15,6 +15,7 @@ public class Emp {
 	private int deptno;
 	private String dname;
 	private double sal;
+	private String div;
 
 	public Emp() {
 	}
@@ -63,8 +64,7 @@ public class Emp {
 		this.deptno = deptno;
 	}
 
-	public Emp(String ename, String email) {
-		this.ename = ename;
+	public Emp(String email) {
 		this.email = email;
 	}
 
@@ -164,4 +164,14 @@ public class Emp {
 		this.dname = dname;
 	}
 
+	public String getDiv() {
+		return div;
+	}
+
+	public void setDiv(String div) {
+		this.div = div;
+	}
+
+	
+	
 }

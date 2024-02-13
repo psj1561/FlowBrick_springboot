@@ -28,32 +28,46 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script type="text/javascript">
-	$(document).ready(function() {
+	$(document).ready(
+			function() {
 
-		$("#forgotBtn").click(function() {
+				$("#forgotBtn").click(function() {
 
-			//초기화 구문
-			$('.failureEmail-message').addClass('hide');
+					//초기화 구문
+					$('.failureEmail-message').addClass('hide');
 
-			// 입력 필드 검증
-			var email = $("#email").val();
+					// 입력 필드 검증
+					var email = $("#email").val();
 
-			if (email === "" || emailFormat(email)===false) {
-				$("#email").focus();
-				$('.failureEmail-message').removeClass('hide');
-				return; // 이메일이 비어있으면 처리 중단
-			}else {
-				$('.failureEmail-message').addClass('hide');
-			}
+					if (email === "" || emailFormat(email) === false) {
+						$("#email").focus();
+						$('.failureEmail-message').removeClass('hide');
+						return; // 이메일이 비어있으면 처리 중단
+					} else {
+						$('.failureEmail-message').addClass('hide');
+					}
 
-			// 모든 검증이 통과되면 폼 제출
-			$("#forgotFrm").submit();
-		});
-		// emailFormat 함수 정의
-			function emailFormat(str) {
-   				 return /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]$/.test(str);
-		}
-	});
+					// 모든 검증이 통과되면 폼 제출
+					$("#forgotFrm").submit();
+				});
+				
+				$("#email").keyup(function(event) {
+					if (event.keyCode === 13) {
+						$("#forgotBtn").click();
+					}
+				});
+				
+				// emailFormat 함수 정의
+				function emailFormat(str) {
+					 return /^[A-Za-z0-9_.-]+@[A-Za-z0-9-]+\.[A-Za-z0-9-.]+$/.test(str);
+				}
+
+				var msg = "${msg}";
+				if (msg !== "") {
+					alert(msg);
+				}
+
+			});
 </script>
 
 
@@ -106,8 +120,7 @@
 										</div>
 										<h1 class="h4 text-gray-900 mb-4">계정찾기</h1>
 										<p class="mb-4">
-											이메일 주소를 입력하시면,<br> 해당 이메일로 사원번호 및 비밀번호 재설정 링크를
-											보내드립니다.
+											이메일 주소를 입력하시면,<br> 해당 이메일로 사원번호 및 비밀번호 재설정 링크를 보내드립니다.
 										</p>
 									</div>
 									<form class="user" method="post" id="forgotFrm">
@@ -118,7 +131,7 @@
 										</div>
 										<div class="failureEmail-message hide error-message">올바른
 											이메일 형식이 아닙니다.</div>
-											
+
 										<button type="button"
 											class="btn btn-primary btn-user btn-block" id=forgotBtn>계정
 											찾기</button>
@@ -126,7 +139,7 @@
 									</form>
 									<hr>
 									<div class="text-center">
-										<a class="small" href="${path}/forgot.do">사원번호/비밀번호찾기</a>
+										<a class="small" href="${path}/login.do">로그인페이지로 이동</a>
 									</div>
 									<!-- <div class="text-center">
 										<a class="small" href="forgot-password.html">비밀번호 찾기</a>

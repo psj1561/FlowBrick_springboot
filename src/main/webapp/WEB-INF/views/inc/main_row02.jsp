@@ -124,7 +124,7 @@
 									<i class="fas fa-exclamation fa-2x text-gray-800"></i>
 								</div>
 								<div class="">
-									<div class="h6 mb-0 font-weight-bold text-gray-800">리스크 ${prj.risk}</div>
+									<div class="h6 mb-0 font-weight-bold text-gray-800">리스크 ${prj.risk}건</div>
 								</div>		
 							</div>
 						</div>

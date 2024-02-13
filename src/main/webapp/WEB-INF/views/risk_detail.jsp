@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>noticeList</title>
+<title>riskDetail</title>
 
      <!-- Custom fonts for this template-->
     <link href="${path}/a00_com/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -58,24 +58,7 @@ input[type=file]::file-selector-button {
 <script src="${path}/a00_com/jquery-ui.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
-		var msg = "${msg}" 
-			if(msg!=""){
-				if(!confirm(msg+"\n계속 등록하시겠습니까?")){
-					location.href="${path}/riskList"
-				}
-				//$("form")[0].reset() // 초기화처리(모델데이터 입력된 내용)
-			}	
-		$("#regBtn").click(function() {
-			if($("[name=riskName]").val() == ""){
-				alert("리스크명을 입력하세요.")
-				return
-			}
-			if($("[name=riskContent]").val()==""){
-				alert("리스크 정보를 입력하세요.")
-				return
-			}
-			$("form").submit()
-		})
+		var riskNo = $("risk.riskNo")
 	});
 </script>
 </head>
@@ -104,30 +87,23 @@ input[type=file]::file-selector-button {
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                        	<h6 class="m-0 font-weight-bold text-primary">리스크 등록</h6>
+                        	<h6 class="m-0 font-weight-bold text-primary">리스크 상세</h6>
                         </div>
                         <div class="card-body">
-							<form method="post" enctype="multipart/form-data" action="${path}/insertRisk">
 								<div class="input-group mb-3">	
 									<div class="input-group-prepend ">
 										<span class="input-group-text  justify-content-center">
-											프로젝트명*</span>
+											프로젝트명</span>
 									</div>
-									<select name="prjNo" class="form-control">
-										<option value="">프로젝트 선택</option>
-										<c:forEach var="proj" items="${projectListByEmp}">
-											<option value="${proj.prjNo}">${proj.prjName}</option>
-										</c:forEach>
-									</select>	
+									<span class="form-control">${projectByPrjNo.prjName}</span>
 								</div>	
 								
 								<div class="input-group mb-3">	
 									<div class="input-group-prepend ">
 										<span class="input-group-text  justify-content-center">
-											작성자(*)</span>
-									</div>
-									<input type="hidden" name="empNo" class="form-control" value="${empResult.empno}"/>		
-									<input type="text" name="writer" class="form-control" value="${empResult.ename}" disabled="disabled"/>	
+											작성자</span>
+									</div>		
+									<span class="form-control">${riskDetail.empNo}</span>	
 									<!-- 
 									session값에 있는 id로 작성자를 자동등록하게 처리.
 									==> 수정삭제시에 현재 로그인한 session의 id와 작성자의 id가 
@@ -138,9 +114,9 @@ input[type=file]::file-selector-button {
 								<div class="input-group mb-3">	
 									<div class="input-group-prepend ">
 										<span class="input-group-text  justify-content-center">
-											리스크명*</span>
+											리스크명</span>
 									</div>	
-									<input name="riskName" class="form-control" value=""/>	
+									<span class="form-control">${riskDetail.riskName}</span>	
 								</div>	
 								
 								<div class="input-group mb-3">	
@@ -158,7 +134,6 @@ input[type=file]::file-selector-button {
 									</div>
 									<textarea id="chatArea" name="riskContent" class="form-control" ></textarea>	
 								</div>
-							</form>
 							<!-- 버튼 div -->
 							<div class="my-2"></div>
 							<div class="d-sm-flex justify-content-between">

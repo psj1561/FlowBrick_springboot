@@ -50,6 +50,8 @@
 		$("#mrsclabel").click(function(){
 			location.href="${path}/MRList.do?prjNo="+${prjNo}+"&prjname="+"${prjname}";//
 		})		
+		
+
 	})
 
 </script>
@@ -92,6 +94,7 @@
 <div class="jumbotron text-center">
   <h2>프로젝트 자원 선택</h2>
 </div>
+
 
 
 

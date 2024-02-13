@@ -27,7 +27,8 @@ import jakarta.servlet.http.HttpSession;
 public class WebService_risk {
 	@Autowired(required = false)
 	private Dao_risk dao;
-	// 공지사항 리스트 불러오기
+	
+	// 리스크 리스트 불러오기
 	public List<Risk> riskList(RiskSch sch) {
 		if(sch.getPrjName()==null) sch.setPrjName("");
 		if(sch.getEname()==null) sch.setEname("");
@@ -60,7 +61,17 @@ public class WebService_risk {
 		return dao.riskList(sch);
 	} 
 	
-    public List<ProjectBasic> getProject(HttpSession session) {
+	// 리스크 상세화면
+	public Risk getRiskDetail(int riskNo) {
+		Risk risk = dao.getRiskDetail(riskNo);
+		risk.setFnames(dao.getRiskFile(riskNo));
+		ProjectBasic pb = new ProjectBasic();
+		// risk.setPrjName(pb.getPrjName());
+		return risk;
+	}
+	
+	// 로그인 session에 해당하는 프로젝트 리스트 출력
+    public List<ProjectBasic> getProjectByEmp(HttpSession session) {
         // 세션에서 empno 값을 가져옵니다.
     	Emp empnoObject = new Emp();
         empnoObject = (Emp)session.getAttribute("empResult");
@@ -70,13 +81,19 @@ public class WebService_risk {
             int empno = empnoObject.getEmpno();
             
             // service의 getProject 메서드를 호출하여 프로젝트 목록을 가져옵니다.
-            return dao.getProject(empno);
+            return dao.getProjectByEmp(empno);
         } else {
             // empno 값이 null이면 빈 리스트를 반환합니다.
             return new ArrayList<>();
         }
     }
+    
+    // 리스크 DB내 프로젝트 키에 해당하는 프로젝트명 출력
+    public List<ProjectBasic> getProjectByPrjNo(Risk sch) {
+    	return dao.getProjectByPrjNo(sch);
+    }
 	
+    // 파일 저장 경로
 	@Value("${riskFile.upload}")
 	private String path;
 	
@@ -94,7 +111,7 @@ public class WebService_risk {
 					String fname = mpf.getOriginalFilename();
 					mpf.transferTo(new File(path+fname));
 					insertRiskFile += dao.insertRiskFile(
-							new RiskFile(fname, path, "프로젝트명 : " + ins.getPrjName() + "리스크명 : " +ins.getRiskName()));
+							new RiskFile(fname, path, "프로젝트 : " + ins.getPrjName() + "리스크 : " +ins.getRiskName()));
 				}
 			} catch (IllegalStateException e) {
 				msg += "파일업로드 오류 : " + e.getMessage() + "\\n";
@@ -102,6 +119,33 @@ public class WebService_risk {
 				msg += "기타 오류 : " + e.getMessage() + "\\n";
 			}
 			msg += "리스크 파일 " + insertRiskFile + "건 등록 완료";
+		}
+		return msg;
+	}
+	
+	// 리스크 업데이트
+	public String updateRisk(Risk upt) {
+		return dao.updateRisk(upt)>0?"리스크 수정 성공":"수정 실패";
+	}
+	
+	// 리스크 삭제
+	public String deleteRisk(int riskNo) {
+		// 1. 파일 목록 가져오기
+		List<String> delFnames = dao.getRiskFile(riskNo);
+		for(String fname:delFnames) {
+			// 2. 경로명, 파일명과 함께 파일 객체 생성
+			File fileToDelete = new File(path+fname);
+			// 3. 파일이 존재할 때, 물리적으로 해당 파일 삭제 처리
+			if(fileToDelete.exists()) { 
+				fileToDelete.delete();
+			}
+		}
+		int delRisk = dao.deleteRisk(riskNo);
+		int delRiskFile = dao.deleteRiskFile(riskNo);
+		String msg = delRisk>0?"리스크 삭제 성공":"삭제 실패";
+		if(delRiskFile>0) {
+			msg+="\\n";
+			msg+="등록된 파일"+delRiskFile+"건 삭제 완료";
 		}
 		return msg;
 	}

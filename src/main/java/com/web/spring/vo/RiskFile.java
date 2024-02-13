@@ -5,6 +5,7 @@ import java.sql.Date;
 import org.springframework.web.multipart.MultipartFile;
 
 public class RiskFile {
+	private int fileNo;
 	private int riskNo;
 	private String fname;
 	private String path;
@@ -20,9 +21,10 @@ public class RiskFile {
 		this.path = path;
 		this.etc = etc;
 	}
-
-	public RiskFile(int riskNo, String fname, String path, Date regdte, Date uptdte, String etc) {
+	
+	public RiskFile(int fileNo, int riskNo, String fname, String path, Date regdte, Date uptdte, String etc) {
 		super();
+		this.fileNo = fileNo;
 		this.riskNo = riskNo;
 		this.fname = fname;
 		this.path = path;
@@ -30,7 +32,13 @@ public class RiskFile {
 		this.uptdte = uptdte;
 		this.etc = etc;
 	}
-	
+
+	public int getFileNo() {
+		return fileNo;
+	}
+	public void setFileNo(int fileNo) {
+		this.fileNo = fileNo;
+	}
 	public int getRiskNo() {
 		return riskNo;
 	}

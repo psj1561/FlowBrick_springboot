@@ -51,10 +51,16 @@ public class WebController_emp {
 	}
 
 	@GetMapping("forgot.do")
-	public String forgot() {
+	public String forgotFrm() {
 		return "forgot";
 	}
-
+	
+	@PostMapping("forgot.do")
+	public String forgot(@RequestParam("email") String email,Model d) {
+		d.addAttribute("msg", service.forgot(email));
+		return "forgot";
+	}
+	
 	@GetMapping("signUp.do")
 	public String signUpFrm() {
 		return "signUp";
@@ -65,10 +71,10 @@ public class WebController_emp {
 		// 1. 회원 등록
 		String signUpResult = service.signUp(emp);
 		d.addAttribute("msg", signUpResult);
-	
 		// 2. 회원 등록이 성공했을 경우에만 이메일 발송
+		String div="reg";
 		if ("등록성공".equals(signUpResult)) {
-			d.addAttribute("emailMsg", service.sendMail(emp));
+			d.addAttribute("emailMsg", service.sendMail(emp.getEmail(),div));
 		}
 
 		return "signUp";

@@ -32,19 +32,18 @@ public class WebService_emp {
 		return dao.login(sch); // null, 객체가 할당.
 	}
 
-	public String signUp(Emp ins) {
-		String password = getTempPassword(); // 임시 비밀번호 생성
-		ins.setPassword(password); // 생성된 임시 비밀번호를 emp 객체의 password에 설정
-		return dao.signUp(ins) > 0 ? "등록성공" : "등록실패";
+	public String forgot(String email) {
+		String div="sch";
+		sendMail(email,div);
+		return dao.checkEmpno(email) > 0 ? "계정찾기 성공" : "계정찾기 실패\\n해당 이메일 주소를 찾을 수 없습니다.";
 	}
 
-	// 메일발송 메서드
-
-	public String sendMail(Emp emp) {
+	// 계정찾기 메일발송 메서드
+	public String sendMail(String email, String div) {
 		String emailMsg = "";
 		// 사원정보가져오기
-		Emp empInfo = dao.getEnameAndEmailBygetEmp(emp); 
-		 
+		Emp empInfo = dao.getEmpByEmail(email);
+
 		// 1. 메일 발송 데이터 전송을 위한 객체 생성.
 		MimeMessage mmsg = sender.createMimeMessage();
 		MimeMessageHelper helper;
@@ -53,15 +52,24 @@ public class WebService_emp {
 					StandardCharsets.UTF_8.name());
 
 			helper.setTo(empInfo.getEmail()); // 받는사람
-			helper.setSubject("FlowBrick 사원번호와 임시비밀번호 전달 건"); // 메일제목
 			String message = "";
-			message += empInfo.getEname() + "님의 사원번호는 " + empInfo.getEmpno() + " 입니다<br>";
-			
-			message += "임시비밀번호는 " + empInfo.getPassword() + " 입니다";
-			helper.setText(message, true); // ture넣을경우 html
+			if (div.equals("reg")) {
+				helper.setSubject("[FlowBrick] 사원번호와 임시비밀번호 전달 건"); // 메일제목
+
+				message += empInfo.getEname() + "님의 사원번호는 " + empInfo.getEmpno() + " 입니다<br>";
+				message += "임시 비밀번호는 " + empInfo.getPassword() + " 입니다";
+				helper.setText(message, true); // ture넣을경우 html
+			}
+			if (div.equals("sch")) {
+				helper.setSubject("[FlowBrick] 계정정보 전달 건"); // 메일제목
+				message += empInfo.getEname() + "님의 사원번호는 " + empInfo.getEmpno() + " 입니다<br>";
+				message += "비밀번호 변경을 원하시면 아래 링크를 통해 변경하실 수 있습니다.";
+				helper.setText(message, true); // 
+			}
 
 			// 4) 발송처리..
 			sender.send(mmsg);
+
 			emailMsg = "메일발송 성공";
 
 		} catch (MessagingException e) {
@@ -76,6 +84,12 @@ public class WebService_emp {
 
 	}
 
+	public String signUp(Emp ins) {
+		String password = getTempPassword(); // 임시 비밀번호 생성
+		ins.setPassword(password); // 생성된 임시 비밀번호를 emp 객체의 password에 설정
+		return dao.signUp(ins) > 0 ? "등록성공" : "등록실패";
+	}
+
 	// 임시 비밀번호 생성
 	public String getTempPassword() {
 		char[] charList = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
@@ -85,7 +99,7 @@ public class WebService_emp {
 		for (int i = 0; i < 6; i++) {
 			idx = (int) (Math.random() * 36);
 			tempPw += charList[idx];
-		} 
+		}
 		return tempPw;
 	}
 

@@ -18,9 +18,14 @@ import com.web.spring.vo.TeamMate;
 public interface Dao_risk {
 	// 총 리스크 건수
 	public int cntRisk(RiskSch sch);
-	
 	// 리스크 리스트
 	public List<Risk> riskList(RiskSch sch);
+	
+	// 리스크 상세
+	public Risk getRiskDetail(int riskNo);
+	
+	// 리스크 파일 불러오기
+	public List<String> getRiskFile(int riskNo);
 	
 	// 리스크 등록
 	public int insertRisk(Risk ins);
@@ -40,7 +45,14 @@ public interface Dao_risk {
 			+ "AND pb.PRJNO = pt.PRJNO\r\n"
 			+ "AND pt.TEAMNO = tm.TEAMNO\r\n"
 			+ "AND tm.EMPNO = #{empno}")
-	public List<ProjectBasic> getProject(int empno);
+	public List<ProjectBasic> getProjectByEmp(int empno);
+	@Select("SELECT * FROM PROJECTBASIC WHERE prjno = #{prjNo}")
+	public List<ProjectBasic> getProjectByPrjNo(Risk sch);
+	
+	public int updateRisk(Risk upt);
+	public int deleteRisk(int riskNo);
+	public int deleteRiskFile(int riskNo);
+	
 }
 
 

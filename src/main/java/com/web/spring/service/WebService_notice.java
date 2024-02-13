@@ -159,7 +159,9 @@ public class WebService_notice {
 	}
 	// 파일만 삭제처리
 	public String deleteFile(NoticeFile del) {
-
+		String fname = del.getFname();
+		File fileToDelete = new File(path+fname);
+		if(fileToDelete.exists()) fileToDelete.delete();		
 		return dao.deleteFile(del)>0?"삭제성공":"삭제실패";
 	}
 	

@@ -8,30 +8,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Risk List</title>
+<title>Risk 승인대기</title>
 
-
-
-
-<%--
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script
-	src="https://developers.google.com/web/ilt/pwa/working-with-the-fetch-api"
-	type="text/javascript"></script>
-
-<script type="text/javascript">
-	$(document).ready(function() {
-
-	});
-</script>
- --%>
- 
- 
      <!-- Custom fonts for this template-->
     <link href="${path}/a00_com/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="${path}/a00_com/css/sb-admin-2.min.css" rel="stylesheet">
@@ -88,7 +72,7 @@
 				<div class="container-fluid">
 
                      <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Risk List</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Risk 승인대기</h1>
 
 <p>
                     <div class="card shadow mb-4">
@@ -165,11 +149,21 @@
                                 </table>
 								<div class="d-sm-flex justify-content-between">
 									<div></div>
-									<a id=regBtn href="#" class="btn btn-primary btn-icon-split">
-										<span class="icon text-white-50"> <i
-											class="fas fa-arrow-right"></i>
-									</span> <span class="text">신규등록</span>
-									</a>
+										<div>
+											<a href="${path}/notice.do" class="btn btn-secondary btn-icon-split"> <span
+												class="icon text-white-50"> <i class="fas fa-arrow-right"></i>
+											</span> <span class="text">일괄승인</span>
+											</a>		
+											<a id="uptBtn" class="btn btn-info btn-icon-split"> <span
+												class="icon text-white-50"> <i class="fas fa-arrow-right"></i>
+											</span> <span class="text">승인</span>
+											</a>
+											
+											<a id="delBtn" class="btn btn-danger btn-icon-split"> <span
+												class="icon text-white-50"> <i class="fas fa-trash"></i>
+											</span> <span class="text">반려</span>
+											</a>								
+										</div>
 								</div>
 									<ul class="pagination justify-content-center">
 										<li class="page-item">
@@ -231,8 +225,5 @@
 <!-- Page level plugins -->
 <script src="${path}/a00_com/vendor/chart.js/Chart.min.js"></script>
 
-<!-- Page level custom scripts -->
-<script src="${path}/a00_com/js/demo/chart-area-demo.js"></script>
-<script src="${path}/a00_com/js/demo/chart-pie-demo.js"></script>	
 </body>
 </html>
