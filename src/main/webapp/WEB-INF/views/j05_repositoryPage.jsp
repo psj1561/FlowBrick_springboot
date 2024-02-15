@@ -60,11 +60,12 @@
 		
 		
 		$("#cntRegBtn").click(function(){ //이동갯수를 입력하고 최종확인 버튼 누른경우
-
 			if($("#index").val()=="MRTOREP"){
 				$.ajax({
 					url:"${path}/transferToRepository.do",
-					data:"cntInput="+$("[name=cntInput]").val()+"&materialresourceno="+$("#materialresourcenoRepository").val(),
+					data:"cntInput="+$("[name=cntInput]").val()
+					+"&materialresourceno="
+					+$("#materialresourcenoRepository").val(),
 					dataType:"json",
 					success:function(data){
 						alert(data.msg)
@@ -78,8 +79,6 @@
 				})
 			}
 
-			
-			
 			if($("#index").val()=="REPTOMR"){
 				$.ajax({
 					url:"${path}/transferToMaterialResource.do",
@@ -95,16 +94,9 @@
 						console.log(err)
 					}
 				})
-			}
-			
-			
+			}			
 		})
-		
-		
-		
-		
-		
-		
+
 	})
 	
 	function goToRepository(materialresourceno){//물적자원리스트 더블클릭해서 비품창고로 이동
@@ -134,7 +126,9 @@
 	function goToMaterialResource(repno){//비품창고리스트 더블클릭해서 물적자원으로 이동
 				$.ajax({
 				url:"${path}/repositoryList2.do",
-				data:"prjNo="+$("#prjNoPermanent").val()+"&prjname="+$("#frm01 [name=prjname]").val()+"&repno="+repno+"&index=REPTOMR",
+				data:"prjNo="+$("#prjNoPermanent").val()
+				+"&prjname="+$("#frm01 [name=prjname]").val()
+				+"&repno="+repno+"&index=REPTOMR",
 				dataType:"json",
 				success:function(data){
 					$("#repno").val(repno);

@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8" import="java.util.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:set var="path" value="${pageContext.request.contextPath }" />
 <fmt:requestEncoding value="utf-8" />
 <!DOCTYPE html>
@@ -29,6 +30,7 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+	
 
 		$("#loginBtn").click(function() {
 
@@ -63,6 +65,15 @@
 				$("#loginBtn").click();
 			}
 		});
+		
+		// 이전화면에서 요청된 내용을 선택하게 하게, 선택할 때, 서버에 언어 선택 내용 전달.
+		$("#selectLan").val("${param.lang}").change(function() {
+			var chVal = $(this).val()
+			if (chVal != '') {
+				location.href = "${path}/multiLang?lang=" + chVal
+
+			}
+		})
 		//로그인 처리
 		var empno = "${emp.empno}"
 		var sessEmpno = "${empResult.empno}"
@@ -92,7 +103,9 @@
 <link
 	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
 	rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap"
+	rel="stylesheet">
 
 <!-- Custom styles for this template-->
 <link href="${path}/a00_com/css/sb-admin-2.min.css" rel="stylesheet">
@@ -123,27 +136,43 @@
 							</div>
 							<div class="col-lg-6">
 								<div class="p-5">
-									<div class="text-center">
-										<div class="brand-icon">
-											<img class='img-icon' src="${path}/a00_com/img/FB_icon4.png">
-										</div>
-										<h1 class="h4 text-gray-900 mb-4">로그인</h1>
+
+									<div class="brand-icon">
+										<img class='img-icon' src="${path}/a00_com/img/FB_icon4.png">
 									</div>
-									<form class="user" method="post" id="loginFrm">
+
+									<div class="input-group-prepend">
+										<select class="form-control" id="selectLan">
+											<option value="" selected disabled ><spring:message
+													code="chlange"/></option>
+											<option value="ko"><spring:message
+													code="ko" /></option>
+											<option value="en"><spring:message
+													code="en" /></option>
+										</select>
+									</div>
+									<div class="text-center">
+										<h1 class="h4 text-gray-900 mb-4">
+											<spring:message code="login" />
+										</h1>
+									</div>
+									<form class="user" method="post" id="loginFrm" action="${path}/login.do">
 										<div class="form-group">
 											<input type="number" name="empno"
 												class="form-control form-control-user" id="empno"
-												placeholder="사원번호 입력">
+												placeholder='<spring:message
+							code="empno" />'>
 										</div>
-										<div class="failureId-message hide error-message">사원번호를
-											입력해주세요</div>
+										<div class="failureId-message hide error-message"><spring:message
+							code="failureId-message" /></div>
 										<div class="form-group">
 											<input type="password" name="password"
 												class="form-control form-control-user" id="password"
-												placeholder="비밀번호 입력">
+												placeholder='<spring:message
+							code="pwd" />'>
 										</div>
-										<div class="failurePassword-message hide error-message">비밀번호를
-											입력해주세요</div>
+										<div class="failurePassword-message hide error-message"><spring:message
+							code="failurePassword-message" /></div>
 										<!-- <div class="form-group">
 											<div class="custom-control custom-checkbox small">
 												<input type="checkbox" class="custom-control-input"
@@ -153,7 +182,9 @@
 											</div>
 										</div> -->
 										<button type="button"
-											class="btn btn-primary btn-user btn-block" id=loginBtn>로그인</button>
+											class="btn btn-primary btn-user btn-block" id=loginBtn>
+											<spring:message code="login" />
+										</button>
 										<!-- <hr> -->
 										<!-- <a href="index.html" class="btn btn-google btn-user btn-block">
 											<i class="fab fa-google fa-fw"></i> Login with Google
@@ -164,7 +195,8 @@
 									</form>
 									<hr>
 									<div class="text-center">
-										<a class="small" href="${path}/forgot.do">사원번호/비밀번호찾기</a>
+										<a class="small" href="${path}/forgot.do"><spring:message
+												code="forgot" /></a>
 									</div>
 									<!-- <div class="text-center">
 										<a class="small" href="forgot-password.html">비밀번호 찾기</a>

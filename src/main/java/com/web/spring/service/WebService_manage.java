@@ -59,6 +59,15 @@ public class WebService_manage {
 		}
 		sch.setStartBlock((blockNum-1)*sch.getBlockSize()+1);
 		return dao.riskList(sch);
-	} 
+	}
+	
+	public int allowRisk(int riskNo) {
+		
+		return dao.allowRisk(riskNo);
+	}
+	public int denyRisk(int riskNo) {
+		
+		return dao.denyRisk(riskNo);
+	}
 	
 }

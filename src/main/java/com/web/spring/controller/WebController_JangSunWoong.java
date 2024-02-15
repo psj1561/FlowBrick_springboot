@@ -3,15 +3,19 @@ package com.web.spring.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.google.gson.Gson;
 import com.web.spring.service.WebService_JangSunWoong;
 import com.web.spring.vo.DataBetweenMrAndRep;
 import com.web.spring.vo.DataBetweenRepAndMr;
+import com.web.spring.vo.Gantt_Links;
+import com.web.spring.vo.Gantt_Task;
 import com.web.spring.vo.HumanResource;
 import com.web.spring.vo.MaterialResource;
 import com.web.spring.vo.ProjectBasic;
@@ -22,6 +26,9 @@ import com.web.spring.vo.Repository;
 @Controller
 public class WebController_JangSunWoong {
 
+	
+	
+	
 	@Autowired(required = false)
 	private WebService_JangSunWoong service;
 	
@@ -225,9 +232,6 @@ public class WebController_JangSunWoong {
 				}
 			}
 		}
-			
-
-		
 		return "pageJsonReport";
 	}
 	
@@ -240,8 +244,8 @@ public class WebController_JangSunWoong {
 			service.transferToRepositoryStep1(dbram);
 			service.transferToRepositoryStep2(dbram);
 			d.addAttribute("msg","성공");
-			service.deleteZeroCntMR();//이거 위치 재조정하자.
-			service.deleteZeroCntRepository(); //이거 위치 재조정하자.
+			service.deleteZeroCntMR();
+			service.deleteZeroCntRepository();
 		}
 		return "pageJsonReport";
 	}
@@ -260,7 +264,56 @@ public class WebController_JangSunWoong {
 		return "pageJsonReport";
 	}
 	
-	// http://localhost:2222/gantt.do
+	
+	
+	
+	
+	
+
+	
+
+	
+	
+	
+
+	
+	
+	/*
+	// 주의하자 spring boot에서 pageJsonReport로 그대로 화면 출력 불가능하다. 단, 데이터 추출은 가능하다.
+	@RequestMapping("getGanttTask.do")
+	public String getGanttTask(Model d) {
+		d.addAttribute("tasks",service.getGanttTask());
+		return "pageJsonReport";
+	}
+	
+	@RequestMapping("getGanttLinks.do")
+	public String getGanttLinks(Model d) {
+		d.addAttribute("links",service.getGanttLinks());
+		return "pageJsonReport";
+	}
+	*/
+	
+	/*
+	@RequestMapping("getGanttTask.do")
+	public ResponseEntity<?> getGanttTask() {
+		return ResponseEntity.ok(service.getGanttTask());
+	}
+	
+	@RequestMapping("getGanttLinks.do")
+	public ResponseEntity<?> getGanttLinks() {
+		return ResponseEntity.ok(service.getGanttLinks());
+	}
+	*/
+	
+	@RequestMapping("getGanttChart.do") 
+	public String getGanttChart(Model d) {
+		d.addAttribute("tasks",service.getGanttTask());
+		d.addAttribute("links",service.getGanttLinks());
+		return "pageJsonReport";
+	}
+	
+	
+// http://localhost:2222/gantt.do
 	@RequestMapping("gantt.do")
 	public String gantt() {
 		return "j06_ganttChart";

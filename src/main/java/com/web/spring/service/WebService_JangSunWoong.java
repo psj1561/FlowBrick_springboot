@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.web.spring.dao.Dao_JangSunWoong;
 import com.web.spring.vo.DataBetweenMrAndRep;
 import com.web.spring.vo.DataBetweenRepAndMr;
+import com.web.spring.vo.Gantt_Links;
+import com.web.spring.vo.Gantt_Task;
 import com.web.spring.vo.HumanResource;
 import com.web.spring.vo.MaterialResource;
 import com.web.spring.vo.ProjectBasic;
@@ -176,5 +178,11 @@ public class WebService_JangSunWoong {
 	
 	
 	
+	public List<Gantt_Task> getGanttTask(){
+		return dao.getGanttTask();
+	}
 	
+	public List<Gantt_Links> getGanttLinks(){
+		return dao.getGanttLinks();
+	}
 }

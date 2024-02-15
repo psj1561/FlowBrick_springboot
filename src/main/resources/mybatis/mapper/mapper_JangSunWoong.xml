@@ -185,6 +185,10 @@
 		WHERE repno=#{repno}
 	</insert>
 	
+	
+	
+	
+	
 	<select id="getRepCnt" resultType="int" parameterType="int">
 		SELECT repcnt 
 		FROM REPOSITORY 
@@ -200,5 +204,15 @@
 	<delete id="deleteZeroCntRepository">
 		DELETE FROM REPOSITORY r WHERE repcnt=0
 	</delete>
+
+	
+	<select id="getGanttTask" parameterType="gantt_task" resultType="gantt_task">
+		SELECT id, text, to_char(start_date,'DD-MM-YYYY') "start_date", duration, parent, progress FROM GANTT_TASKS
+	</select>
+	
+	<select id="getGanttChart" parameterType="gantt_links" resultType="gantt_links">
+		SELECT * FROM GANTT_LINKS
+	</select>
+	
 	
 </mapper>	

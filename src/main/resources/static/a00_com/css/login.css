@@ -58,3 +58,18 @@ font-size: .8rem;
 .table td{
 	text-align: center;
 }
+
+#selectLan{
+	width: 50%;
+	margin-left: 50%;
+	margin-bottom: 6%;
+	font-size: .8rem;
+}
+
+.fas{
+	margin-right:6%;
+}
+
+#mypageFrm .btn-danger{
+	width: 15%;
+}

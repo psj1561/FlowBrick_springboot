@@ -1,6 +1,7 @@
 package com.web.spring.controller;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import com.web.spring.service.WebService_emp;
 import com.web.spring.vo.Dept;
@@ -20,6 +23,9 @@ import com.web.spring.vo.Emp;
 import com.web.spring.vo.EmpInfo;
 import com.web.spring.vo.EmpPaging;
 import com.web.spring.vo.EmpSch;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -27,15 +33,19 @@ public class WebController_emp {
 	@Autowired(required = false)
 	private WebService_emp service;
 
-	// http://211.63.89.67:2222/pms/login.do
-	// http://localhost:8088/pms/login.do
-	// http://localhost:7080/pms/login.do
+	// 다국어 처리 : 컨테이너에 선언한 지역 언어선택 객체 호출
+	@Autowired(required = false)
+	private SessionLocaleResolver localeResolver;
+
+	// http://211.63.89.67:2222/login.do
+	// http://localhost:2222/pms/login.do
 	@GetMapping("login.do")
 	public String loginFrm() {
 		return "login";
 	}
 
-	@RequestMapping("login.do")
+	// 로그인
+	@PostMapping("login.do")
 	public String login(Emp emp, HttpSession session) {
 		Emp empResult = service.login(emp);
 		if (empResult != null) {
@@ -44,6 +54,19 @@ public class WebController_emp {
 		return "login";
 	}
 
+	// 로그인 다국어 처리
+	@RequestMapping("multiLang")
+	public String multiLang(@RequestParam(value = "lang", defaultValue = "ko") String lang, HttpServletRequest request,
+			HttpServletResponse response) {
+		System.out.println("선택한 언어:" + lang);
+		// 화면에 지역에 따른 언어선택을 전송 처리..
+		Locale locale = new Locale(lang);
+		localeResolver.setLocale(request, response, locale);
+
+		return "login";
+	}
+
+	// 로그아웃
 	@GetMapping("logout.do")
 	public String logout(HttpSession session) {
 		session.invalidate();
@@ -54,13 +77,14 @@ public class WebController_emp {
 	public String forgotFrm() {
 		return "forgot";
 	}
-	
+
+	// 계정찾기
 	@PostMapping("forgot.do")
-	public String forgot(@RequestParam("email") String email,Model d) {
+	public String forgot(@RequestParam("email") String email, Model d) {
 		d.addAttribute("msg", service.forgot(email));
 		return "forgot";
 	}
-	
+
 	@GetMapping("signUp.do")
 	public String signUpFrm() {
 		return "signUp";
@@ -72,9 +96,9 @@ public class WebController_emp {
 		String signUpResult = service.signUp(emp);
 		d.addAttribute("msg", signUpResult);
 		// 2. 회원 등록이 성공했을 경우에만 이메일 발송
-		String div="reg";
+		String div = "reg";
 		if ("등록성공".equals(signUpResult)) {
-			d.addAttribute("emailMsg", service.sendMail(emp.getEmail(),div));
+			d.addAttribute("emailMsg", service.sendMail(emp.getEmail(), div));
 		}
 
 		return "signUp";
@@ -101,6 +125,14 @@ public class WebController_emp {
 		return "mypage";
 	}
 
+	//비밀번호 변경
+	@GetMapping("passwordChanges.do")
+	public String passwordChangesFrm() {
+		return "paasword_changes";
+	}
+
+	
+	
 	// 부서등록 페이지
 	@GetMapping("deptReg.do")
 	public String deptRegFrm() {

@@ -95,7 +95,7 @@ input[type=file]::file-selector-button {
 										<span class="input-group-text  justify-content-center">
 											프로젝트명</span>
 									</div>
-									<span class="form-control">${projectByPrjNo.prjName}</span>
+									<span class="form-control">${riskDetail.prjNo}</span>
 								</div>	
 								
 								<div class="input-group mb-3">	

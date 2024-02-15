@@ -32,8 +32,7 @@
 		    }    
 		    .scrollable-container::-webkit-scrollbar-thumb:active {
 		      background-color: #4668c8; /* 클릭할 때 색상 변경 */
-		    }
-	      
+		    }  
 </style>
 <c:if test="${not empty prjList}">
 <!-- 내 프로젝트 -->

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.web.spring.vo.DataBetweenMrAndRep;
 import com.web.spring.vo.DataBetweenRepAndMr;
+import com.web.spring.vo.Gantt_Links;
+import com.web.spring.vo.Gantt_Task;
 import com.web.spring.vo.HumanResource;
 import com.web.spring.vo.MaterialResource;
 import com.web.spring.vo.ProjectBasic;
@@ -104,6 +106,12 @@ public interface Dao_JangSunWoong{
 	int deleteZeroCntRepository();
 	
 
+	
+	//DB에서 gantt_tast 테이블에 존재하는 모든 항목을 출력한다
+	List<Gantt_Task> getGanttTask();
+	
+	//DB에서 gantt_tast 테이블에 존재하는 모든 항목을 출력한다
+	List<Gantt_Links> getGanttLinks();
 	
 	
 }

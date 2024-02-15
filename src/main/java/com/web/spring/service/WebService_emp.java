@@ -38,7 +38,7 @@ public class WebService_emp {
 		return dao.checkEmpno(email) > 0 ? "계정찾기 성공" : "계정찾기 실패\\n해당 이메일 주소를 찾을 수 없습니다.";
 	}
 
-	// 계정찾기 메일발송 메서드
+	// 메일발송 메서드
 	public String sendMail(String email, String div) {
 		String emailMsg = "";
 		// 사원정보가져오기

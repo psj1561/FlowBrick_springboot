@@ -48,7 +48,7 @@
 					<div class="bg-white py-2 collapse-inner rounded">
 						<h6 class="collapse-header">내 프로젝트</h6>
 						<a class="collapse-item" href="${path}/projectList">프로젝트 리스트</a>
-						<a class="collapse-item" href="${path}/riskList">리스크</a>
+						<a class="collapse-item" href="${path}/riskList">리스크 리스트</a>
 					</div>
 				</div></li>
 				
@@ -60,6 +60,11 @@
 			<!-- 일정 -->
 			<li class="nav-item"><a class="nav-link" href="${path}/z05_bootTmp/a70_tables.jsp">
 					<i class="fas fa-fw fa-table"></i> <span>일정</span>
+			</a></li>
+			
+			<!-- 채팅 -->
+			<li class="nav-item" id="chatting"><a class="nav-link" href="${path}/chatting">
+					<i class="fas fa-comments"></i> <span>채팅</span>
 			</a></li>
 
 			<hr class="sidebar-divider d-none d-md-block">
@@ -82,8 +87,7 @@
 							<h6 class="collapse-header">사원관리</h6>
 							<a class="collapse-item" href="${path}/empList.do">사원목록</a> <a
 								class="collapse-item" href="${path}/signUp.do">사원등록</a>
-						</c:if>
-						<c:if test="${empResult.auth == '관리자'||empResult.auth == '인사관리자'}">
+								
 							<h6 class="collapse-header">부서관리</h6>
 							<a class="collapse-item" href="${path}/deptList.do">부서목록</a> <a
 								class="collapse-item" href="${path}/deptReg.do">부서등록</a>

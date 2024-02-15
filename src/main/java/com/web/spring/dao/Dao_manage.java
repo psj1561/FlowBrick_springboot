@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.web.spring.vo.ProjectBasic;
 import com.web.spring.vo.ProjectSch;
@@ -45,6 +46,10 @@ public interface Dao_manage {
 	// 리스크 리스트
 	public List<Risk> riskList(RiskSch sch);
 	
+	@Update("UPDATE RISK set state = '진행중' WHERE riskNo = #{riskNo}")
+	public int allowRisk(int riskNo);
+	@Update("UPDATE RISK set state = '반려' WHERE riskNo = #{riskNo}")
+	public int denyRisk(int riskNo);
 	
 }
 

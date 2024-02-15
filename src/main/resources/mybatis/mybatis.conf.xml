@@ -14,8 +14,9 @@
 		<typeAlias alias="humanresource" type="com.web.spring.vo.HumanResource"/>
 		<typeAlias alias="databetweenrepandmr" type="com.web.spring.vo.DataBetweenRepAndMr"/> 
 		<typeAlias alias="databetweenmrandrep" type="com.web.spring.vo.DataBetweenMrAndRep"/>
-		
-		
+		<typeAlias alias="gantt_links" type="com.web.spring.vo.Gantt_Links"/>
+		<typeAlias alias="gantt_task" type="com.web.spring.vo.Gantt_Task"/>
+
 		<typeAlias alias="projectSch" type="com.web.spring.vo.ProjectSch"/>
 		<typeAlias alias="projectBasic" type="com.web.spring.vo.ProjectBasic"/>
 		<typeAlias alias="projectTeam" type="com.web.spring.vo.ProjectTeam"/>
@@ -29,6 +30,9 @@
 		<typeAlias alias="risk" type="com.web.spring.vo.Risk"/>
 		<typeAlias alias="riskSch" type="com.web.spring.vo.RiskSch"/>
 		<typeAlias alias="riskFile" type="com.web.spring.vo.RiskFile"/>
+		
+		<typeAlias alias="calendar" type="com.web.spring.vo.Calendar"/>
+		
 		
 		<typeAlias alias="notice" type="com.web.spring.vo.Notice"/>		
 		<typeAlias alias="noticeSch" type="com.web.spring.vo.NoticeSch"/>					
