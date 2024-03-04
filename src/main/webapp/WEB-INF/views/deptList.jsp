@@ -220,14 +220,16 @@
 					</div>
 
 					<div class="my-2"></div>
-					<div class="d-sm-flex justify-content-between">
-						<div></div>
-						<a id=regBtn href=${path}/deptReg.do
-							class="btn btn-success btn-icon-split"> <span
-							class="icon text-white-50"> <i class="fas fa-arrow-right"></i>
-						</span> <span class="text">부서등록</span>
-						</a>
-					</div>
+					<c:if test="${empResult.auth == '인사관리자'}">
+						<div class="d-sm-flex justify-content-between">
+							<div></div>
+							<a id=regBtn href=${path}/deptReg.do
+								class="btn btn-success btn-icon-split"> <span
+								class="icon text-white-50"> <i class="fas fa-arrow-right"></i>
+							</span> <span class="text">부서등록</span>
+							</a>
+						</div>
+					</c:if>
 					<div class="my-2"></div>
 					<!-- buttons -->
 

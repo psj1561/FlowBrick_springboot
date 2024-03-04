@@ -59,29 +59,41 @@ public class WebService_project {
 	}
 	
 	// 프로젝트, 팀, 팀원 등록
-    public String insertProject(InsertProjectRequest request) {
+    public String insertProject(ProjectBasic pb, ProjectTeam pt, List<String> empno) {
         String msg = "";
 
         // 프로젝트 기본 정보 등록
-        int pbIns = dao.insertProjectBasic(request.getProjectBasic());
+        int pbIns = dao.insertProjectBasic(pb);
         msg += (pbIns > 0) ? "기본정보 등록 성공\n" : "등록 실패\n";
-
+        System.out.println(msg);
         // 프로젝트 팀 등록
-        int ptIns = dao.insertProjectTeam(request.getProjectTeam());
+        int ptIns = dao.insertProjectTeam(pt);
         msg += ptIns + "개의 팀 등록 완료\n";
-
+        System.out.println(msg);
         // 팀원 등록
-        int tmCount = 0;
-        for (TeamMate teamMate : request.getTeamMateList()) {
-            int tmIns = dao.insertTeamMate(teamMate);
-            if (tmIns > 0) {
-                tmCount++;
-            }
+        int tmIns = 0;
+        int countTmIns =0;
+        for(String memberNums : empno) {
+        	String[] nums = memberNums.replace(" ", "").split(",");
+        	countTmIns = nums.length;
+        	for(String num : nums) {
+        		try {        			
+        			int empNum = Integer.parseInt(num);
+        			tmIns = dao.insertTeamMate(empNum);
+        		}catch (NumberFormatException e) {
+					System.out.println("에러1 : " + e.getMessage());
+				}
+        		catch (Exception e) {
+        			System.out.println("에러2 : " + e.getMessage());
+				}
+        	}
         }
-        msg += tmCount + "명의 팀원 등록 완료";
+        msg += countTmIns + "명의 팀원 등록 완료";
 
         return msg;
     }
+    
+    
 
 	
 	public String insertProjectBasic(ProjectBasic ins) {
@@ -94,8 +106,8 @@ public class WebService_project {
 		return msg;
 	}
 	
-	public String insertTeamMate(TeamMate ins) {
-		return dao.insertTeamMate(ins)+"명 등록 완료";
+	public String insertTeamMate(int empno) {
+		return dao.insertTeamMate(empno)+"명 등록 완료";
 	}
 	
 		

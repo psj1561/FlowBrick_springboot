@@ -5,14 +5,14 @@ import java.util.List;
 public class InsertProjectRequest {
     private ProjectBasic projectBasic;
     private ProjectTeam projectTeam;
-    private List<TeamMate> teamMateList;
+    private TeamMate[] teamMateList;
     
 	public InsertProjectRequest() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
-	public InsertProjectRequest(ProjectBasic projectBasic, ProjectTeam projectTeam, List<TeamMate> teamMateList) {
+	public InsertProjectRequest(ProjectBasic projectBasic, ProjectTeam projectTeam, TeamMate[] teamMateList) {
 		super();
 		this.projectBasic = projectBasic;
 		this.projectTeam = projectTeam;
@@ -31,10 +31,10 @@ public class InsertProjectRequest {
 	public void setProjectTeam(ProjectTeam projectTeam) {
 		this.projectTeam = projectTeam;
 	}
-	public List<TeamMate> getTeamMateList() {
+	public TeamMate[] getTeamMateList() {
 		return teamMateList;
 	}
-	public void setTeamMateList(List<TeamMate> teamMateList) {
+	public void setTeamMateList(TeamMate[] teamMateList) {
 		this.teamMateList = teamMateList;
 	}
 }

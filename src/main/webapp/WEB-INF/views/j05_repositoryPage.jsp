@@ -18,26 +18,15 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="${path}/a00_com/css/sb-admin-2.min.css" rel="stylesheet">
- 
-<style type="text/css">
-	.input-group-text{width:100%;background-color:linen;
-		color:black;font-weight:bolder;}
-	.input-group-prepend{width:20%;}
-	#chatArea{
-		width:80%;height:200px;overflow-y:auto;text-align:left;
-		border:1px solid green;
-	}
-	.jumbotron{padding:2%;}	
-</style>
-
-
+<link href="${path}/a00_com/css/sb-admin-2.min.css" rel="stylesheet">
 <script src="${path}/a00_com/jquery.min.js"></script>
 <script src="${path}/a00_com/popper.min.js"></script>
 <script src="${path}/a00_com/bootstrap.min.js"></script>
 <script src="${path}/a00_com/jquery-ui.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://developers.google.com/web/ilt/pwa/working-with-the-fetch-api" type="text/javascript"></script>
+
+
 <script type="text/javascript">
 
 
@@ -60,6 +49,14 @@
 		
 		
 		$("#cntRegBtn").click(function(){ //이동갯수를 입력하고 최종확인 버튼 누른경우
+			
+			if($("[name=cntInput]").val()<0){
+				alert("갯수는 0 이상이어야 합니다.")
+				return false;
+			}
+			
+			
+			
 			if($("#index").val()=="MRTOREP"){
 				$.ajax({
 					url:"${path}/transferToRepository.do",
@@ -112,6 +109,8 @@
 					$("#maxCnt").val(data.mrCnt);
 					//alert("#maxCnt에 "+data.mrCnt+"할당한다.")
 					$("#materialresourcenoRepository").val(data.materialresourceno)
+					
+					$("#clsBtn2").hide();
 					$("#transferBtn").click();
 				},
 				error:function(err){
@@ -136,6 +135,7 @@
 					$("#maxCntRepository").val(data.repositoryCnt);
 					alert("#maxCntRepository에 "+data.repositoryCnt+"할당한다.")
 					$("#materialresourcenoRepository").val($("#prjNoPermanent").val())
+					$("#clsBtn2").hide();
 					$("#transferBtn").click();
 				},
 				error:function(err){
@@ -198,7 +198,7 @@
 			밑에 id="schBtn"과 함꼐 나중에 비품이름 검색 처리 하자.
 		    <input placeholder="비품창고 비품이름검색" name="materialresourcename"  value="${repositorySch.materialresourcename}"  class="form-control mr-sm-2"/>
 		    -->
-		    
+		    <input type="hidden" name="curPage" value="${mrsch.curPage}"/>
 			<input type="hidden" name="prjNo" value="${mrsch.prjNo}"/>
 			<input type="hidden" name="prjname" value="${mrsch.prjname}"/>
 			
@@ -218,10 +218,47 @@
 		    -->
 		    <button id="transferBtn" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" type="button">물적자원 이동</button>
 	 	</nav>
+	 	
+	 	
+	 	
+	 	<div class="input-group mt-3 mb-0">
+		    <span class="input-group-text">총:${mrsch.count}건</span>
+		    <input type="text" class="form-control" aria-label="Total count" style="width:70%;">
+		    <span class="input-group-text">페이지수</span>
+		    <select name="pageSize" class="form-control" aria-label="Page size">
+		        <option>3</option>
+		        <option>5</option>
+		        <option>10</option>
+		        <option>20</option>
+		        <option>50</option>
+		    </select>
+		</div>
+		
+		
+		
+		<script type="text/javascript">
+			// 선택된 페이지 사이즈를 다음 호출된 페이지에서 출력
+			$("[name=pageSize]").val("${mrsch.pageSize}")
+			// 페이지크기를 변경했을 때, 선택된 페이지를 초기페이지로 설정..
+			$("[name=pageSize]").change(function(){
+				$("[name=curPage]").val(1)
+				$("#frm01").attr("action","${path}/repositoryList.do")
+				$("#frm01").submit()
+			})
+		</script> 
 	</form>
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<!-- 물적자원 테이블 -->
-	<table class="table table-hover table-striped">
+	<table class="table table-hover table-bordered" width="100%" cellspacing="0">
    	<col width="20%">
    	<col width="20%">
    	<col width="20%">
@@ -231,7 +268,7 @@
 
     <thead>
     
-      <tr class="table-success text-center">
+      <tr class="text-center">
         <th>물적자원번호</th>
 		<th>프로젝트이름</th>
 		<th>개당비용</th>
@@ -244,24 +281,56 @@
     
     	<c:forEach var="mr" items="${mrList}">
     		<tr ondblclick="goToRepository(${mr.materialresourceno})">
-    		<td>${mr.materialresourceno}</td>
+    		<td style="text-align:right">${mr.materialresourceno}</td>
     		<td>${mr.prjname}</td>
-    		<td>${mr.price}</td>
-    		<td>${mr.materialresourcename}</td>
-    		<td>${mr.productcnt}</td>
+    		<td style="text-align:right">${mr.price}</td>
+    		<td style="text-align:right">${mr.materialresourcename}</td>
+    		<td style="text-align:right">${mr.productcnt}</td>
     		</tr>
     	</c:forEach>
     	
     	<tr>
-    	<td colspan="4" style="text-align:right;">총액 </td><td><fmt:formatNumber value="${totalPriceMr}"/></td>
+    	<td colspan="4" style="text-align:center;">총액 </td><td style="text-align:right"><fmt:formatNumber value="${totalPriceMr}"/></td>
     	</tr>
     </tbody>
 
 	</table>  
 	
 	
+	
+	
+	
+	<ul class="pagination  justify-content-end">
+	  <li class="page-item">
+	  	<a class="page-link" href="javascript:goPage(${mrsch.startBlock-1})">Previous</a></li>
+	  <c:forEach var="pcnt" begin="${mrsch.startBlock}" end="${mrsch.endBlock}">
+	  <li class="page-item ${mrsch.curPage==pcnt?'active':''}">
+	  	<a class="page-link" href="javascript:goPage(${pcnt})">${pcnt}</a></li>
+	  </c:forEach>
+	  <li class="page-item"><a class="page-link" href="javascript:goPage(${mrsch.endBlock+1})">Next</a></li>
+	</ul>
+	
+	
+	
+	<script type="text/javascript">
+		function goPage(pcnt){
+			$("[name=curPage]").val(pcnt)
+			$("#frm01").attr("action","${path}/repositoryList.do")
+			$("#frm01").submit()
+		}
+	</script>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<!-- 비품창고 테이블 -->
-   <table class="table table-hover table-striped">
+   <table class="table table-hover table-bordered">
    	<col width="16%">
    	<col width="16%">
    	<col width="16%">
@@ -269,8 +338,7 @@
    	<col width="16%">
    	<col width="16%">
     <thead>
-    
-      <tr class="table-success text-center">
+      <tr class="text-center">
         <th>저장번호</th>
 		<th>시설or물건구분</th>
 		<th>자원이름</th>
@@ -282,11 +350,11 @@
     <tbody>
     	<c:forEach var="repository" items="${repositoryList}">
     		<tr ondblclick="goToMaterialResource(${repository.repno})"> 
-    		<td>${repository.repno}</td>
-    		<td>${repository.division}</td>
+    		<td style="text-align:right">${repository.repno}</td>
+    		<td style="text-align:right">${repository.division}</td>
     		<td>${repository.materialresourcename}</td>
-    		<td>${repository.repcnt}</td>
-    		<td>${repository.rentorbuy}</td>
+    		<td style="text-align:right">${repository.repcnt}</td>
+    		<td style="text-align:right">${repository.rentorbuy}</td>
     		<td>${repository.facilityloc}</td>
     		</tr>
     	</c:forEach>

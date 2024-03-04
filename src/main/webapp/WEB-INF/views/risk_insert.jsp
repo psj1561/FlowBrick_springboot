@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>noticeList</title>
+<title>insertRisk</title>
 
      <!-- Custom fonts for this template-->
     <link href="${path}/a00_com/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -20,15 +20,11 @@
     <link href="${path}/a00_com/css/sb-admin-2.min.css" rel="stylesheet">
     
 <style type="text/css">
-.input-file-button {
-	padding: 6px 25px;
-	background-color: #FF6600;
-	border-radius: 4px;
-	color: white;
-	cursor: pointer;
-}
 .fileform{
 	display: none;
+}
+#fileList{
+	padding-bottom: 10px;
 }
 
 input[type=file]::file-selector-button {
@@ -50,7 +46,13 @@ input[type=file]::file-selector-button {
 	height: 400px;
 	overflow-y: auto;
 	text-align: left;
-	border: 0.5px solid green;
+}
+
+.input-group-prepend {
+	width: 10%;
+}
+.input-group-text {
+	width: 100%;
 }
 </style>
 
@@ -58,6 +60,11 @@ input[type=file]::file-selector-button {
 <script src="${path}/a00_com/jquery-ui.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
+		var sessId = "${empResult.empno}"
+			if (sessId == "") {
+				alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
+				location.href = "${path}/login.do"
+			}
 		var msg = "${msg}" 
 			if(msg!=""){
 				if(!confirm(msg+"\n계속 등록하시겠습니까?")){
@@ -66,6 +73,10 @@ input[type=file]::file-selector-button {
 				//$("form")[0].reset() // 초기화처리(모델데이터 입력된 내용)
 			}	
 		$("#regBtn").click(function() {
+			if($("[name=prjNo]").val() == ""){
+				alert("리스크가 발생하는 프로젝트를 입력하세요.")
+				return
+			}
 			if($("[name=riskName]").val() == ""){
 				alert("리스크명을 입력하세요.")
 				return
@@ -77,6 +88,34 @@ input[type=file]::file-selector-button {
 			$("form").submit()
 		})
 	});
+	
+    function displayFileNames() {
+        var fileListContainer = document.getElementById('customFile');
+        var files = fileListContainer.files;
+        var fileListDiv = document.getElementById('fileList');
+        fileListDiv.innerHTML = ''; // Clear previous list
+        
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var fileSize = getFileSize(file.size);
+            
+            var listItem = document.createElement('div');
+            listItem.className = 'file-item';
+            
+            var fileNameNode = document.createTextNode(file.name + ' (' + fileSize + ')');
+            listItem.appendChild(fileNameNode);
+            
+            fileListDiv.appendChild(listItem);
+        }
+    }
+
+    function getFileSize(size) {
+        if (size === 0) return '0 Bytes';
+        var k = 1024;
+        var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+        var i = Math.floor(Math.log(size) / Math.log(k));
+        return parseFloat((size / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
 </script>
 </head>
 <body id="page-top">
@@ -115,7 +154,7 @@ input[type=file]::file-selector-button {
 									</div>
 									<select name="prjNo" class="form-control">
 										<option value="">프로젝트 선택</option>
-										<c:forEach var="proj" items="${projectListByEmp}">
+										<c:forEach var="proj" items="${projectByEmp}">
 											<option value="${proj.prjNo}">${proj.prjName}</option>
 										</c:forEach>
 									</select>	
@@ -148,8 +187,10 @@ input[type=file]::file-selector-button {
 										<span class="input-group-text  justify-content-center">
 											첨부파일</span>
 									</div>
-									<input type="file" name="reports" multiple="multiple" class="form-control" value="" />
+									<input type="file" name="reports" multiple="multiple" class="form-control" id="customFile"
+										multiple onchange="displayFileNames()"/>
 								</div>	
+								<div id="fileList"></div>
 									
 								<div class="input-group mb-3">	
 									<div class="input-group-prepend ">
@@ -219,11 +260,5 @@ input[type=file]::file-selector-button {
 <!-- Custom scripts for all pages-->
 <script src="${path}/a00_com/js/sb-admin-2.min.js"></script>
 
-<!-- Page level plugins -->
-<script src="${path}/a00_com/vendor/chart.js/Chart.min.js"></script>
-
-<!-- Page level custom scripts -->
-<script src="${path}/a00_com/js/demo/chart-area-demo.js"></script>
-<script src="${path}/a00_com/js/demo/chart-pie-demo.js"></script>	
 </body>
 </html>

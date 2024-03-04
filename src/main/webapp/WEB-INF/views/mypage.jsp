@@ -32,8 +32,8 @@
 			location.href = "${path}/login.do"
 		}
 
-		$("#regBtn").click(function(event) {
-			event.preventDefault();
+		$("#regBtn").click(function() {
+
 			$("#mypageFrm").submit();
 		})
 
@@ -121,11 +121,11 @@
 							<div class="card-header py-3">
 								<label>비밀번호</label>
 								<div>
-									<button class="btn btn-danger"
-										onclick="location.href='${path}/passwordChanges.do'">
-										<i class="fas fa-lock"></i>비밀번호 변경
-									</button>
+									<a class="btn btn-danger" href="${path}/passwordChanges.do"><i
+										class="fas fa-lock"></i>비밀번호 변경</a>
 								</div>
+
+
 							</div>
 						</div>
 						<!-- 첨부파일 -->
@@ -155,7 +155,6 @@
 							<div></div>
 
 							<div>
-
 
 								<a id="regBtn" class="btn btn-success btn-icon-split"> <span
 									class="icon text-white-50"> <i
@@ -191,6 +190,10 @@
 		<a class="scroll-to-top rounded" href="#page-top"> <i
 			class="far fa-angle-up"></i>
 		</a>
+
+
+
+
 		<!-- Logout Modal-->
 		<%@ include file="inc/logout_modal.jsp"%>
 
@@ -205,12 +208,5 @@
 
 		<!-- Custom scripts for all pages-->
 		<script src="${path}/a00_com/js/sb-admin-2.min.js"></script>
-
-		<!-- Page level plugins -->
-		<script src="${path}/a00_com/vendor/chart.js/Chart.min.js"></script>
-
-		<!-- Page level custom scripts -->
-		<script src="${path}/a00_com/js/demo/chart-area-demo.js"></script>
-		<script src="${path}/a00_com/js/demo/chart-pie-demo.js"></script>
 </body>
 </html>

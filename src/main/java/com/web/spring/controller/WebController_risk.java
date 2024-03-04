@@ -1,6 +1,7 @@
 package com.web.spring.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import com.web.spring.vo.ProjectPaging;
 import com.web.spring.vo.ProjectSch;
 import com.web.spring.vo.ProjectTeam;
 import com.web.spring.vo.Risk;
+import com.web.spring.vo.RiskFile;
 import com.web.spring.vo.RiskSch;
 import com.web.spring.vo.TeamEmp;
 import com.web.spring.vo.TeamMate;
@@ -55,14 +57,35 @@ public class WebController_risk {
 	}
 	
 	// 로그인 세션에 해당하는 포르젝트 리스트 출력
-    @ModelAttribute("projectListByEmp")
-    public List<ProjectBasic> getProjectList(HttpSession session) {
+    @ModelAttribute("projectByEmp")
+    public List<ProjectBasic> getProjectByEmp(HttpSession session) {
     	return service.getProjectByEmp(session);
     }
-	
+    
+    // 리스크 리스트 프로젝트명 호출
     @ModelAttribute("projectByPrjNo")
     public List<ProjectBasic> getProjectByPrjNo(Risk sch) {
-    	return service.getProjectByPrjNo(sch);
+    	return service.getProjectByPrjNo(sch.getPrjNo());
+    }
+    
+    // 리스크 상세화면 프로젝트명 호출
+    @ModelAttribute("projectByPrjNo2")
+    public List<ProjectBasic> getProjectByPrjNo2(@RequestParam(required = false) Integer riskNo) {
+    	if(riskNo == null) {
+            return Collections.emptyList(); // 또는 null을 반환하거나 다른 처리를 수행할 수 있습니다.
+        } else {
+            return service.getProjectByPrjNo(service.getRiskDetail(riskNo).getPrjNo());
+        }
+    }
+    
+    // 리스크 상세화면 사원명 호출
+    @ModelAttribute("empByEmpNo")
+    public List<Emp> getEmpByEmpNo(@RequestParam(required = false) Integer riskNo) {
+    	if(riskNo == null) {
+    		return Collections.emptyList();
+    	} else {
+    		return service.getEmpbyEmpNo(service.getRiskDetail(riskNo).getEmpNo());
+    	}
     }
     
     // 리스크 등록 처리
@@ -72,7 +95,14 @@ public class WebController_risk {
 		return "risk_insert";
 	}
 	
-	// 리스크 수정
+	// 리스크 수정 화면
+	@RequestMapping("updateRiskFrm")
+	public String updateRiskFrm(int riskNo, Model d) {
+		d.addAttribute("riskDetail", service.getRiskDetail(riskNo));
+		return "risk_update";
+	}
+	
+	// 리스크 수정 처리
 	@PostMapping("updateRisk")
 	public String updateRisk(Risk upt, Model d) {
 		// 수정 처리
@@ -84,18 +114,26 @@ public class WebController_risk {
 	}
 	
 	// 리스크 삭제
-	@PostMapping("deleteRisk")
+	@RequestMapping("deleteRisk")
 	public String deleteRisk(int riskNo, Model d) {
 		d.addAttribute("proc", "del");
 		d.addAttribute("msg", service.deleteRisk(riskNo));
 		return "risk_detail";
 	}
 	
+	// 파일 삭제
+	@PostMapping("deleteFile")
+	public String deleteFile(RiskFile del, Model d) {
+		d.addAttribute("msg", service.deleteFile(del));
+		d.addAttribute("riskDetail", service.getRiskDetail(del.getRiskNo()));
+		return "risk_update";
+	}
+	
 	// 파일 다운로드
 	@RequestMapping("downloadFile")
 	public String downloadFile(@RequestParam("fname") String fname, Model d) {
 		d.addAttribute("downloadFile", fname);
-		return "downloadViewer";
+		return "riskDownloadViewer";
 	}
 
 }

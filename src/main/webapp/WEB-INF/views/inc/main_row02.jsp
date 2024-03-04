@@ -76,8 +76,8 @@
 									<div
 										class="text-lg font-weight-bold text-primary text-uppercase mb-4">
 										<c:choose>	
-										<c:when test="${fn:length(prj.prjName) > 16}">
-										    <c:set var="prjN" value="${fn:substring(prj.prjName, 0, 16 > fn:length(prj.prjName) ? fn:length(prj.prjName) : 16)}" />
+										<c:when test="${fn:length(prj.prjName) > 20}">
+										    <c:set var="prjN" value="${fn:substring(prj.prjName, 0, 20 > fn:length(prj.prjName) ? fn:length(prj.prjName) : 20)}" />
 										    ${prjN}..
 										</c:when>
 										<c:otherwise>

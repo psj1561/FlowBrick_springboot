@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class Risk {
 	private int cnt;
 	private int riskNo;
-	private int prjNo;
+	private long prjNo;
 	private String prjName;
 	private int empNo;
 	private String ename;
@@ -28,7 +28,7 @@ public class Risk {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Risk(int cnt, int riskNo, int prjNo, String prjName, int empNo, String ename, String riskName,
+	public Risk(int cnt, int riskNo, long prjNo, String prjName, int empNo, String ename, String riskName,
 			String riskContent, String dangerStep, Date uploadDate, String uploadDateStr, Date completeDate,
 			String completeDateStr, String state) {
 		super();
@@ -60,10 +60,10 @@ public class Risk {
 	public void setRiskNo(int riskNo) {
 		this.riskNo = riskNo;
 	}
-	public int getPrjNo() {
+	public long getPrjNo() {
 		return prjNo;
 	}
-	public void setPrjNo(int prjNo) {
+	public void setPrjNo(long prjNo) {
 		this.prjNo = prjNo;
 	}
 	public String getPrjName() {

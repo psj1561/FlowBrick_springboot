@@ -22,7 +22,8 @@
 
 	
 	<insert id="insertProjectBasic" parameterType="projectBasic">
-		INSERT INTO projectbasic VALUES(
+		INSERT INTO projectbasic(prjno, prjname, prjpriority, prjacceptdate, prjbegin, prjend, prjstep) 
+		VALUES(
 			 prj_seq.nextval, #{prjName}, #{prjPriority},
 			 to_date(#{prjAcceptDateStr},'YYYY-MM-DD'),
 			 to_date(#{beginDateStr},'YYYY-MM-DD'), 
@@ -37,17 +38,10 @@
 		)
 	</insert>
 		
-	<insert id="insertTeamMate" parameterType="teamMate">
+	<insert id="insertTeamMate" parameterType="int">
 		INSERT INTO teammate VALUES(
-			tm_seq.nextval, team_seq.currval, #{empno}, #{auth}
+			teammem_seq.nextval, team_seq.currval, #{empno}, '팀원', ''
 		)
 	</insert>
 	
-	<!--
-	<select id="tmList" parameterType="">
-		SELECT tm.*, 
-		FROM teammate
-		WHERE 
-	</select>
-	 -->
 </mapper>	

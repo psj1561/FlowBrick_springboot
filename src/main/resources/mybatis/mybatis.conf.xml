@@ -9,9 +9,15 @@
 		<typeAlias alias="dept" type="com.web.spring.vo.Dept" />
 		<typeAlias alias="deptSch" type="com.web.spring.vo.DeptSch" />
 		
+		<typeAlias alias="chattingRoom" type="com.web.spring.vo.ChattingRoom" />
+		<typeAlias alias="ChRoomInfo" type="com.web.spring.vo.ChRoomInfo" />
 		
 		<typeAlias alias="materialresource" type="com.web.spring.vo.MaterialResource"/>
+		<typeAlias alias="mrSch" type="com.web.spring.vo.MaterialResourceSch"/>
+		
 		<typeAlias alias="humanresource" type="com.web.spring.vo.HumanResource"/>
+		<typeAlias alias="hrSch" type="com.web.spring.vo.HumanResourceSch"/>
+		
 		<typeAlias alias="databetweenrepandmr" type="com.web.spring.vo.DataBetweenRepAndMr"/> 
 		<typeAlias alias="databetweenmrandrep" type="com.web.spring.vo.DataBetweenMrAndRep"/>
 		<typeAlias alias="gantt_links" type="com.web.spring.vo.Gantt_Links"/>
@@ -22,6 +28,16 @@
 		<typeAlias alias="projectTeam" type="com.web.spring.vo.ProjectTeam"/>
 		<typeAlias alias="projectPaging" type="com.web.spring.vo.ProjectPaging"/>
 		<typeAlias alias="insertProjectRequest" type="com.web.spring.vo.InsertProjectRequest"/>		
+
+
+		<typeAlias alias="dept_Jang" type="com.web.spring.vo.Dept_Jang" />
+
+
+
+
+
+		<typeAlias alias="task" type="com.web.spring.vo.Task"/>		
+		<typeAlias alias="taskSch" type="com.web.spring.vo.TaskSch"/>		
 				
 		<typeAlias alias="teamMate" type="com.web.spring.vo.TeamMate"/>
 		<typeAlias alias="teamEmp" type="com.web.spring.vo.TeamEmp"/>

@@ -38,7 +38,7 @@ public class WebController_emp {
 	private SessionLocaleResolver localeResolver;
 
 	// http://211.63.89.67:2222/login.do
-	// http://localhost:2222/pms/login.do
+	// http://localhost:2222/login.do
 	@GetMapping("login.do")
 	public String loginFrm() {
 		return "login";
@@ -73,16 +73,50 @@ public class WebController_emp {
 		return "redirect:login.do";
 	}
 
-	@GetMapping("forgot.do")
+	@GetMapping("forgotEmpno")
 	public String forgotFrm() {
-		return "forgot";
+		return "forgotEmpno";
 	}
 
-	// 계정찾기
-	@PostMapping("forgot.do")
+	// 사원번호찾기
+	@PostMapping("forgotEmpno")
 	public String forgot(@RequestParam("email") String email, Model d) {
-		d.addAttribute("msg", service.forgot(email));
-		return "forgot";
+		// 1. 사원번호 찾기
+		String forgotEmpnoResult = service.forgotEmpno(email);
+		d.addAttribute("msg", forgotEmpnoResult);
+		// 2. 사원번호찾기가 성공했을 경우에만 이메일 발송
+		String div = "schEmpno";
+		if ("사원번호찾기 성공".equals(forgotEmpnoResult)) {
+			d.addAttribute("emailMsg", service.sendMail(email, div));
+		}
+		return "forgotEmpno";
+	}
+
+	@GetMapping("forgotPwd")
+	public String forgotPwdFrm() {
+		return "forgotPwd";
+	}
+
+	// 비밀번호 찾기
+
+	@PostMapping("forgotPwd")
+	public String forgotPwd(Emp emp, Model d) { //
+		// 1. 계정 찾기
+		String forgotPwdResult = service.forgotPwd(emp);
+		d.addAttribute("msg", forgotPwdResult);
+
+		// 2. 계정찾기가 성공했을 경우에만 임시비밀번호 발급 및 이메일발송
+		if ("비밀번호찾기 성공".equals(forgotPwdResult)) {
+			String password = service.getTempPassword();
+			emp.setPassword(password); 
+			// 생성된 임시 비밀번호를 emp 객체의 password에 설정
+			// 임시비밀번호 업데이트
+			service.updateTempPw(emp);
+			String div = "schPwd";
+			d.addAttribute("emailMsg", service.sendMail(emp.getEmail(), div));
+		}
+
+		return "forgotPwd";
 	}
 
 	@GetMapping("signUp.do")
@@ -107,11 +141,12 @@ public class WebController_emp {
 	@GetMapping("mypage.do")
 	public String mypageFrm(HttpSession session, Model d) {
 		Emp emp = (Emp) session.getAttribute("empResult");
-		int empno = emp.getEmpno();
-		// 회원정보 조회
-		EmpInfo empInfo = service.getEmpInfo(empno);
-		d.addAttribute("empInfo", empInfo);
-		/* session.setAttribute("empInfo", empInfo); */
+		if (emp != null) {
+			int empno = emp.getEmpno();
+			// 회원정보 조회
+			EmpInfo empInfo = service.getEmpInfo(empno);
+			d.addAttribute("empInfo", empInfo);
+		}
 		return "mypage";
 	}
 
@@ -125,14 +160,21 @@ public class WebController_emp {
 		return "mypage";
 	}
 
-	//비밀번호 변경
+	// 비밀번호 변경 폼
 	@GetMapping("passwordChanges.do")
 	public String passwordChangesFrm() {
-		return "paasword_changes";
+		return "password_changes";
+	}
+	
+	// 비밀번호 변경
+	@PostMapping("passwordChanges.do")
+	public String passwordChanges(Emp emp,Model d, HttpSession session) {
+		d.addAttribute("msg", service.updatePwd(emp));
+		Emp newEmpResult=service.getEmp(emp.getEmpno());
+		session.setAttribute("empResult", newEmpResult);
+		return "password_changes";
 	}
 
-	
-	
 	// 부서등록 페이지
 	@GetMapping("deptReg.do")
 	public String deptRegFrm() {
@@ -228,6 +270,11 @@ public class WebController_emp {
 	@ModelAttribute("jobs") // job, mgrInfos
 	public List<String> getJobs() {
 		return service.getJobs();
+	}
+	
+	@ModelAttribute("auths") // job, mgrInfos
+	public List<String> getAuths() {
+		return service.getAuths();
 	}
 
 }

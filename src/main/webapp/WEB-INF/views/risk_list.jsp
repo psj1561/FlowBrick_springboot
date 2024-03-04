@@ -43,6 +43,11 @@
 <script src="https://developers.google.com/web/ilt/pwa/working-with-the-fetch-api" type="text/javascript"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
+		var sessId = "${empResult.empno}"
+			if (sessId == "") {
+				alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
+				location.href = "${path}/login.do"
+			}
 		$("#regBtn").click(function(){
 			location.href="${path}/insertRiskFrm"
 		})
@@ -61,7 +66,6 @@
 	function goDetail(riskNo){
 		location.href="${path}/riskDetail?riskNo="+riskNo
 	}
-	
 </script>
  
 </head>
@@ -155,8 +159,8 @@
 												<td>${rl.prjName}</td>
 												<td>${rl.riskName}</td>
 												<td>${rl.dangerStep}</td>
-												<td><fmt:formatDate value="${rl.uploadDate}" pattern="YYYY-MM-DD"/></td>
-												<td><fmt:formatDate value="${rl.completeDate}" pattern="YYYY-MM-DD"/></td>
+												<td><fmt:formatDate value="${rl.uploadDate}" pattern="yyyy-MM-dd"/></td>
+												<td><fmt:formatDate value="${rl.completeDate}" pattern="yyyy-MM-dd"/></td>
 												<td>${rl.ename}</td>
 												<td>${rl.state}</td>
 											</tr>

@@ -32,10 +32,20 @@ public class WebService_emp {
 		return dao.login(sch); // null, 객체가 할당.
 	}
 
-	public String forgot(String email) {
-		String div="sch";
-		sendMail(email,div);
-		return dao.checkEmpno(email) > 0 ? "계정찾기 성공" : "계정찾기 실패\\n해당 이메일 주소를 찾을 수 없습니다.";
+	// 사원번호 찾기
+	public String forgotEmpno(String email) {
+		return dao.checkEmpno(email) > 0 ? "사원번호찾기 성공" : 
+			"사원번호찾기 실패\\n해당 이메일 주소를 찾을 수 없습니다.";
+	}
+
+	// 비밀번호 찾기
+	public String forgotPwd(Emp emp) {
+		return dao.forgotPwd(emp) > 0 ? "비밀번호찾기 성공" : "비밀번호찾기 실패\\n해당 정보를 찾을 수 없습니다.";
+	}
+
+	// 임시 비밀번호 저장
+	public int updateTempPw(Emp emp) {
+		return dao.updateTempPw(emp);
 	}
 
 	// 메일발송 메서드
@@ -60,11 +70,15 @@ public class WebService_emp {
 				message += "임시 비밀번호는 " + empInfo.getPassword() + " 입니다";
 				helper.setText(message, true); // ture넣을경우 html
 			}
-			if (div.equals("sch")) {
-				helper.setSubject("[FlowBrick] 계정정보 전달 건"); // 메일제목
+			if (div.equals("schEmpno")) {
+				helper.setSubject("[FlowBrick] 사원번호찾기 정보 전달 건"); // 메일제목
 				message += empInfo.getEname() + "님의 사원번호는 " + empInfo.getEmpno() + " 입니다<br>";
-				message += "비밀번호 변경을 원하시면 아래 링크를 통해 변경하실 수 있습니다.";
-				helper.setText(message, true); // 
+				helper.setText(message, true); //
+			}
+			if (div.equals("schPwd")) {
+				helper.setSubject("[FlowBrick] 비밀번호찾기 정보 전달 건"); // 메일제목
+				message += empInfo.getEname() + "님의 임시비밀번호는 " + empInfo.getPassword()+" 입니다<br>";
+				helper.setText(message, true); //
 			}
 
 			// 4) 발송처리..
@@ -92,11 +106,12 @@ public class WebService_emp {
 
 	// 임시 비밀번호 생성
 	public String getTempPassword() {
-		char[] charList = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
-				'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+		char[] charList = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+				'A', 'B', 'C', 'D', 'E', 'F','G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+				'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 		String tempPw = "";
 		int idx = 0;
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 8; i++) {
 			idx = (int) (Math.random() * 36);
 			tempPw += charList[idx];
 		}
@@ -109,6 +124,11 @@ public class WebService_emp {
 
 	public String updateEmpInfo(Emp upt) {
 		return dao.updateEmpInfo(upt) > 0 ? "수정성공" : "수정실패";
+	}
+
+	// 비밀번호 변경
+	public String updatePwd(Emp emp) {
+		return dao.updatePwd(emp) > 0 ? "수정성공" : "수정실패";
 	}
 
 	public String insertDept(Dept ins) {
@@ -153,6 +173,7 @@ public class WebService_emp {
 	}
 
 	public String deptDelete(int deptno) {
+		dao.empUpdateByDeptDelete(deptno);
 		return dao.deptDelete(deptno) > 0 ? "삭제성공" : "삭제실패";
 	}
 
@@ -204,6 +225,10 @@ public class WebService_emp {
 
 	public List<String> getJobs() {
 		return dao.getJobs();
+	};
+	
+	public List<String> getAuths() {
+		return dao.getAuths();
 	};
 
 }

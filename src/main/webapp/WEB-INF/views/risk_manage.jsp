@@ -49,8 +49,7 @@ td {
 
      <!-- Custom fonts for this template-->
     <link href="${path}/a00_com/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
 
@@ -60,35 +59,72 @@ td {
 <script src="${path}/a00_com/popper.min.js"></script>
 <script src="${path}/a00_com/bootstrap.min.js"></script>
 <script src="${path}/a00_com/jquery-ui.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script src="https://developers.google.com/web/ilt/pwa/working-with-the-fetch-api" type="text/javascript"></script>
+<script src="https://unpkg.com/vue" type="text/javascript"></script>
+<script src="https://unpkg.com/axios" type="text/javascript" ></script>
+
 <script type="text/javascript">
-	$(document).ready(function(){
-		
-		// 선택된 페이지 사이즈를 다음 호출된 페이지에서 출력
-		$("[name=pageSize]").val("${sch.pageSize}")
-		// 페이지크기를 변경했을 때, 선택된 페이지를 초기페이지로 설정..
-		$("[name=pageSize]").change(function(){
-			$("[name=curPage]").val(1)
-			$("form").submit()
-		})
+$(document).ready(function(){
+	var sessId = "${empResult.empno}"
+		if (sessId == "") {
+			alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
+			location.href = "${path}/login.do"
+		}
+	var baseUrl = "http://211.63.89.67:2222"
+	const app = Vue.createApp({
+	  data() {
+	    return { 
+	      message: "", 
+	      prjName: "", 
+	      ename: "", 
+	      riskName: "", 
+	      count: 0,
+	      pageSize: 5,
+	      curPage: 1,
+	      startBlock: 0, 
+	      endBlock: 0,
+	      riskList: [],
+	      sch: []
+	    };
+	  },
+	  methods: {
+	  	search() {
+	          var url = "/riskManageSch";
+	          var vm = this;
+	          axios.get(baseUrl + url, {
+	            params: {
+	              prjName: this.prjName,
+	              ename: this.ename,
+	              riskName: this.riskName,
+	              count: this.count,
+	              pageSize: this.pageSize,
+	              curPage: this.curPage,
+	              startBlock: this.startBlock,
+	              endBlock: this.endBlock
+	            }
+	          }).then(function(response) {
+	        	  vm.riskList = response.data.riskList;
+	        	  
+	          }).catch(function(err) {
+	            console.log(err);
+	          });
+	        },
+	    goPage(pcnt) {
+	      this.curPage = pcnt;
+	      this.search()
+	    }
+	  },
+	  mounted() {
+	    this.search()
+	  }
 	});
-	function goPage(pcnt){
-		$("[name=curPage]").val(pcnt)
-		$("form").submit();
-	}
-	function goDetail(riskNo){
-		location.href="${path}/riskDetail?riskNo="+riskNo
-	}
-	
+	app.mount("#wrapper")
+});
 </script>
  
 </head>
 <body id="page-top">
-
 	<!-- Page Wrapper -->
 	<div id="wrapper">
-
 		<!-- Sidebar -->
 		<%@ include file="inc/sliderBar.jsp" %>
 		<!-- End of Sidebar -->
@@ -108,7 +144,9 @@ td {
 
                      <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Risk 승인대기</h1>
-
+					<div id="app">
+					{{message}}
+					</div>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Risk Tables</h6>
@@ -116,31 +154,30 @@ td {
 							<form id="frm01" method="post"
 								class="d-none d-sm-inline-block form-inline mr-ml-md-3 my-2 my-md-0 w-100 navbar-search">
 								<div class="input-group mt-3 mb-0">
-										<input type="hidden" name="curPage" value="${sch.curPage}"/>
+										<input type="hidden" v-model="curPage" />
 									<div class="input-group mr-3">
-										<input name="prjName" id="schPrj" type="text" class="form-control border-0 small w-70"
-											value="${sch.prjName}" placeholder="Project Name" aria-label="Search"
+										<input v-model="prjName" id="schPrj" type="text" class="form-control border-0 small w-70"
+											placeholder="Project Name" aria-label="Search"
 											aria-describedby="basic-addon2">
 									</div>
 									<div class="input-group mr-3">
-										<input name="ename" id="schEname" type="text" class="form-control border-0 small w-70"
-											value="${sch.ename}" placeholder="Writer Name" aria-label="Search"
+										<input v-model="ename" id="schEname" type="text" class="form-control border-0 small w-70"
+											placeholder="Writer Name" aria-label="Search"
 											aria-describedby="basic-addon2">
 									</div>
 									<div class="input-group mr-3">
-										<input name="riskName" id="schRiskName" type="text" class="form-control border-0 small w-70"
-											value="${sch.riskName}" placeholder="Risk Name" aria-label="Search"
+										<input v-model="riskName" id="schRiskName" type="text" class="form-control border-0 small w-70"
+											placeholder="Risk Name" aria-label="Search"
 											aria-describedby="basic-addon2">
 									</div>
 									<div class="input-group mr-3">
-										<button id="schBtn" class="btn btn-primary" type="submit">
+										<button @click="search" class="btn btn-primary" type="button">
 											<i class="fas fa-search fa-sm"></i>
 										</button>
 									</div>
 									<div class="input-group ml-auto">
-									    <span class="input-group-text" id="totCnt">총 ${sch.count} 건</span>
 									    <span class="input-group-text">리스트 수</span>
-									    <select name="pageSize" class="form-control" aria-label="Page size">
+									    <select v-model="pageSize" class="form-control" aria-label="Page size">
 									        <option>3</option>
 									        <option>5</option>
 									        <option>10</option>
@@ -167,7 +204,8 @@ td {
                                         </tr>
                                     </thead>
                                     <tbody>
-										<c:forEach var="rl" items="${riskList}">
+                                    <!--  
+                                    	<c:forEach var="rl" items="${riskList}">
 											<tr class="text-center" data-riskNo="${rl.riskNo}" ondblclick="goDetail(${rl.riskNo})">
 												<td class="text-center">${rl.cnt}</td>
 												<td class="text-left">${rl.prjName}</td>
@@ -184,6 +222,22 @@ td {
 												</td>
 											</tr>
 										</c:forEach>
+                                    -->
+                                    	<tr class="text-center" v-for="rl in riskList" :data-riskNo="rl.riskNo">
+											<td class="text-center">{{rl.cnt}}</td>
+											<td class="text-left">{{rl.prjName}}</td>
+											<td class="text-left">{{rl.riskName}}</td>
+											<td>{{rl.dangerStep}}</td>
+											<td>{{rl.uploadDate}}</td>
+											<td>{{rl.completeDate}}</td>
+											<td>{{rl.ename}}</td>
+											<td>
+												<label class="checkbox-container"> 
+													<input type="checkbox">
+													<span class="checkmark"></span>
+												</label>
+											</td>
+										</tr>                                 
                                     </tbody>
                                 </table>
 								<div class="d-sm-flex justify-content-between">
@@ -200,7 +254,25 @@ td {
 											</a>								
 										</div>
 								</div>
-								<script>
+
+
+									<ul class="pagination justify-content-center">
+										<li class="page-item">
+											<a class="page-link" @click="goPage(${sch.startBlock-1})">Previous</a></li>
+									    <c:forEach var="pcnt" begin="${sch.startBlock}" 
+										  						end="${sch.endBlock}">
+									        <li class="page-item ${sch.curPage==pcnt?'active':''}">
+									            <a class="page-link" @click="goPage(${pcnt})">${pcnt}</a>
+									        </li>
+									    </c:forEach>
+									    <li class="page-item">
+									        <a class="page-link" @click="goPage(${sch.endBlock + 1})">Next</a>
+									    </li>
+									</ul>
+                            </div>
+                        </div>
+                    </div>
+  								<script>
 									function getCheckedRows(riskStatus) {
 									    var table = document.getElementById("dataTable");
 									    var checkBoxes = table.querySelectorAll('input[type="checkbox"]');
@@ -248,23 +320,6 @@ td {
 									    }
 									}
 								</script>
-
-									<ul class="pagination justify-content-center">
-										<li class="page-item">
-											<a class="page-link"
-												href="javascript:goPage(${sch.startBlock-1})">Previous</a></li>
-										  <c:forEach var="pcnt" begin="${sch.startBlock}" 
-										  						end="${sch.endBlock}">
-										  <li class="page-item ${sch.curPage==pcnt?'active':''}">
-										  	<a class="page-link" href="javascript:goPage(${pcnt})">${pcnt}</a></li>
-										  </c:forEach>
-									  <li class="page-item"><a class="page-link" 
-									  	href="javascript:goPage(${sch.endBlock+1})">Next</a></li>
-									</ul>
-                            </div>
-                        </div>
-                    </div>
-  
 
 				</div>
 				<!-- /.container-fluid -->

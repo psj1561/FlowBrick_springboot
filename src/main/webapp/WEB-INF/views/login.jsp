@@ -30,13 +30,12 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-	
-
+		
 		$("#loginBtn").click(function() {
 
 			//초기화 구문
 			$('.failurePassword-message').addClass('hide');
-
+		
 			// 입력 필드 검증
 			var empno = $("#empno").val();
 			var password = $("#password").val();
@@ -65,7 +64,7 @@
 				$("#loginBtn").click();
 			}
 		});
-		
+
 		// 이전화면에서 요청된 내용을 선택하게 하게, 선택할 때, 서버에 언어 선택 내용 전달.
 		$("#selectLan").val("${param.lang}").change(function() {
 			var chVal = $(this).val()
@@ -77,15 +76,22 @@
 		//로그인 처리
 		var empno = "${emp.empno}"
 		var sessEmpno = "${empResult.empno}"
+			var sessPwd = "${empResult.password}"
 		if (empno != "") {
 			if (sessEmpno != "") {
 				location.href = "${path}/index.do";
 			} else {
-				alert("로그인 실패\n사원번호 또는 비밀번호가 틀렸습니다.");
+				alert(sessPwd+sessEmpno+"로그인 실패\n사원번호 또는 비밀번호가 틀렸습니다.");
 			}
 		}
 
 	});
+
+	function checkMaxLength(e) {
+		if (e.value.length > e.maxLength) {
+			e.value = e.value.slice(0, e.maxLength);
+		}
+	}
 </script>
 
 
@@ -143,12 +149,10 @@
 
 									<div class="input-group-prepend">
 										<select class="form-control" id="selectLan">
-											<option value="" selected disabled ><spring:message
-													code="chlange"/></option>
-											<option value="ko"><spring:message
-													code="ko" /></option>
-											<option value="en"><spring:message
-													code="en" /></option>
+											<option value="" selected disabled><spring:message
+													code="chlange" /></option>
+											<option value="ko"><spring:message code="ko" /></option>
+											<option value="en"><spring:message code="en" /></option>
 										</select>
 									</div>
 									<div class="text-center">
@@ -156,23 +160,28 @@
 											<spring:message code="login" />
 										</h1>
 									</div>
-									<form class="user" method="post" id="loginFrm" action="${path}/login.do">
+									<form class="user" method="post" id="loginFrm"
+										action="${path}/login.do">
 										<div class="form-group">
-											<input type="number" name="empno"
+											<input type="number" maxlength="5"
+												oninput="checkMaxLength(this)" name="empno"
 												class="form-control form-control-user" id="empno"
 												placeholder='<spring:message
 							code="empno" />'>
 										</div>
-										<div class="failureId-message hide error-message"><spring:message
-							code="failureId-message" /></div>
+										<div class="failureId-message hide error-message">
+											<spring:message code="failureId-message" />
+										</div>
 										<div class="form-group">
-											<input type="password" name="password"
+											<input type="password" maxlength="20"
+												oninput="checkMaxLength(this)" name="password"
 												class="form-control form-control-user" id="password"
 												placeholder='<spring:message
 							code="pwd" />'>
 										</div>
-										<div class="failurePassword-message hide error-message"><spring:message
-							code="failurePassword-message" /></div>
+										<div class="failurePassword-message hide error-message">
+											<spring:message code="failurePassword-message" />
+										</div>
 										<!-- <div class="form-group">
 											<div class="custom-control custom-checkbox small">
 												<input type="checkbox" class="custom-control-input"
@@ -185,25 +194,18 @@
 											class="btn btn-primary btn-user btn-block" id=loginBtn>
 											<spring:message code="login" />
 										</button>
-										<!-- <hr> -->
-										<!-- <a href="index.html" class="btn btn-google btn-user btn-block">
-											<i class="fab fa-google fa-fw"></i> Login with Google
-										</a> <a href="index.html"
-											class="btn btn-facebook btn-user btn-block"> <i
-											class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-										</a> -->
+
 									</form>
 									<hr>
 									<div class="text-center">
-										<a class="small" href="${path}/forgot.do"><spring:message
-												code="forgot" /></a>
+										<a class="small" href="${path}/forgotEmpno"><spring:message
+												code="forgot-empno" /></a> <a class="small"
+											href="${path}/forgotPwd">· <spring:message
+												code="forgot-password" /></a>
 									</div>
-									<!-- <div class="text-center">
-										<a class="small" href="forgot-password.html">비밀번호 찾기</a>
-									</div> -->
-									<!-- <div class="text-center">
-										<a class="small" href="register.html">사원번호 등록 신청</a>
-									</div> -->
+
+
+
 								</div>
 							</div>
 						</div>
@@ -230,8 +232,6 @@
 	<!-- Page level plugins -->
 	<script src="${path}/a00_com/vendor/chart.js/Chart.min.js"></script>
 
-	<!-- Page level custom scripts -->
-	<script src="${path}/a00_com/js/demo/chart-area-demo.js"></script>
-	<script src="${path}/a00_com/js/demo/chart-pie-demo.js"></script>
+
 </body>
 </html>

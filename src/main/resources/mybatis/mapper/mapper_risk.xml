@@ -33,13 +33,13 @@
 		SELECT * FROM risk WHERE riskno=#{riskNo}
 	</select>
 	<select id="getRiskFile" parameterType="int" resultType="String">
-		SELECT * FROM riskfile WHERE riskno=#{riskNo}
+		SELECT fname FROM riskfile WHERE riskno=#{riskNo}
 	</select>
 	
 	<insert id="insertRisk" parameterType="risk">
 		INSERT INTO risk VALUES(
 			risk_seq.nextval, #{prjNo}, #{empNo}, #{riskName}, #{riskContent},
-			null, sysdate, null, '진행중'
+			null, sysdate, null, '승인대기'
 		)
 	</insert>
 	<insert id="insertRiskFile" parameterType="riskFile">
@@ -50,15 +50,22 @@
 	
 	<update id="updateRisk" parameterType="risk">
 		UPDATE risk
-		SET riskname=#{riskName}, riskcontent=#{riskContent}, dangerstep=#{dangerStep},
-			completedate=TO_DATE(#{completeDateStr}, 'YYYY-MM-DD'), state=#{state}
+		SET riskname=#{riskName}, riskcontent=#{riskContent}
 		WHERE riskno=#{riskNo}
 	</update>
+	<insert id="updateRiskFile" parameterType="riskFile">
+		INSERT INTO riskfile VALUES(
+			riskfile_seq.nextval, #{riskNo}, #{fname}, #{path}, sysdate, sysdate, #{etc}
+		)
+	</insert>
 	
 	<delete id="deleteRisk" parameterType="int">
 		DELETE FROM risk WHERE riskno=#{riskNo}
 	</delete>
 	<delete id="deleteRiskFile" parameterType="int">
 		DELETE FROM riskfile WHERE riskno=#{riskNo}
+	</delete>
+	<delete id="deleteFile" parameterType="riskFile">
+		DELETE FROM RISKFILE WHERE fileno=#{fileNo}
 	</delete>
 </mapper>	

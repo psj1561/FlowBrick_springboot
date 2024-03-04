@@ -22,6 +22,14 @@ public class RiskFile {
 		this.etc = etc;
 	}
 	
+	public RiskFile(int riskNo, String fname, String path, String etc) {
+		super();
+		this.riskNo = riskNo;
+		this.fname = fname;
+		this.path = path;
+		this.etc = etc;
+	}
+
 	public RiskFile(int fileNo, int riskNo, String fname, String path, Date regdte, Date uptdte, String etc) {
 		super();
 		this.fileNo = fileNo;

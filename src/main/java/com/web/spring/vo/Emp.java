@@ -40,22 +40,19 @@ public class Emp {
 		this.ename = ename;
 		this.job = job;
 		this.email = email;
-		this.password= password;
+		this.password = password;
 	}
 
-	
-	
-	public Emp(int empno, String ename, String job, String password, String email, int deptno) {
+	public Emp(int empno, String ename, String job, String password, String email, int deptno, String auth) {
 		this.empno = empno;
 		this.ename = ename;
 		this.job = job;
 		this.password = password;
 		this.email = email;
 		this.deptno = deptno;
+		this.auth = auth;
 	}
 
-	
-	
 	public Emp(String ename, String job, String password, String email, int deptno) {
 		this.ename = ename;
 		this.job = job;
@@ -63,6 +60,41 @@ public class Emp {
 		this.email = email;
 		this.deptno = deptno;
 	}
+
+	public Emp(int empno, String ename, String job, String tel, String auth, int deptno) {
+		this.empno = empno;
+		this.ename = ename;
+		this.job = job;
+		this.tel = tel;
+		this.auth = auth;
+		this.deptno = deptno;
+	}
+
+	public Emp(String auth, String ename, String job, int deptno, String tel, int empno) {
+		this.empno = empno;
+		this.ename = ename;
+		this.job = job;
+		this.tel = tel;
+		this.auth = auth;
+		this.deptno = deptno;
+	}
+
+	public Emp(int empno, String email, String password) {
+		this.empno = empno;
+		this.email = email;
+		this.password = password;
+	}
+
+	public Emp(int empno, String email) {
+		this.empno = empno;
+		this.email = email;
+	}
+
+	public Emp(String password, int empno) {
+		this.empno = empno;
+		this.password = password;
+	}
+	
 
 	public Emp(String email) {
 		this.email = email;
@@ -172,6 +204,4 @@ public class Emp {
 		this.div = div;
 	}
 
-	
-	
 }

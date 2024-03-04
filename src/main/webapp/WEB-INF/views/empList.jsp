@@ -71,17 +71,23 @@
 				$("[name=curPage]").val(sch.curPage)
 				pageFunc(sch.startBlock, sch.endBlock)
 				var html = ""
-				$(empPage.elist).each(function(idx, emp) {
-					html += "<tr ondblclick='goDetail(" + emp.empno + ")'>"
-					html += "<td>" + emp.cnt + "</td>"
-					html += "<td>" + emp.empno + "</td>"
-					html += "<td>" + emp.ename + "</td>"
-					html += "<td>" + emp.dname + "</td>"
-					html += "<td>" + emp.job + "</td>"
-					html += "<td>" + (emp.tel != null ? emp.tel : '') + "</td>"
-					html += "<td>" + emp.email + "</td>"
-					html += "</tr>"
-				})
+				$(empPage.elist).each(
+						function(idx, emp) {
+							html += "<tr ondblclick='goDetail(" + emp.empno
+									+ ")'>"
+							html += "<td>" + emp.cnt + "</td>"
+							html += "<td>" + emp.empno + "</td>"
+							html += "<td>" + emp.ename + "</td>"
+							html += "<td>"
+									+ (emp.dname != null ? emp.dname : '')
+									+ "</td>"
+							html += "<td>" + emp.job + "</td>"
+							html += "<td>" + (emp.tel != null ? emp.tel : '')
+									+ "</td>"
+							html += "<td style='text-align: left;'>"
+									+ emp.email + "</td>"
+							html += "</tr>"
+						})
 				$("tbody").html(html)
 			},
 			error : function(err) {
@@ -232,14 +238,16 @@
 					</div>
 
 					<div class="my-2"></div>
-					<div class="d-sm-flex justify-content-between">
-						<div></div>
-						<a id=regBtn href=${path}/signUp.do
-							class="btn btn-success btn-icon-split"> <span
-							class="icon text-white-50"> <i class="fas fa-arrow-right"></i>
-						</span> <span class="text">사원등록</span>
-						</a>
-					</div>
+					<c:if test="${empResult.auth == '인사관리자'}">
+						<div class="d-sm-flex justify-content-between">
+							<div></div>
+							<a id=regBtn href=${path}/signUp.do
+								class="btn btn-success btn-icon-split"> <span
+								class="icon text-white-50"> <i class="fas fa-arrow-right"></i>
+							</span> <span class="text">사원등록</span>
+							</a>
+						</div>
+					</c:if>
 					<div class="my-2"></div>
 					<!-- buttons -->
 

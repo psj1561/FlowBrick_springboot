@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import com.web.spring.vo.Emp;
 import com.web.spring.vo.ProjectBasic;
 import com.web.spring.vo.ProjectSch;
 import com.web.spring.vo.ProjectTeam;
@@ -47,11 +48,16 @@ public interface Dao_risk {
 			+ "AND tm.EMPNO = #{empno}")
 	public List<ProjectBasic> getProjectByEmp(int empno);
 	@Select("SELECT * FROM PROJECTBASIC WHERE prjno = #{prjNo}")
-	public List<ProjectBasic> getProjectByPrjNo(Risk sch);
+	public List<ProjectBasic> getProjectByPrjNo(long prjNo);
+	@Select("SELECT * FROM FB_EMP WHERE empno = #{empNo}")
+	public List<Emp> getEmpByEmpNo(int empno);
 	
 	public int updateRisk(Risk upt);
+	public int updateRiskFile(RiskFile upt);
+	
 	public int deleteRisk(int riskNo);
 	public int deleteRiskFile(int riskNo);
+	public int deleteFile(int fileNo);
 	
 }
 

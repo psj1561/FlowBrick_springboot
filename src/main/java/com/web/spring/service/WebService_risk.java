@@ -65,8 +65,6 @@ public class WebService_risk {
 	public Risk getRiskDetail(int riskNo) {
 		Risk risk = dao.getRiskDetail(riskNo);
 		risk.setFnames(dao.getRiskFile(riskNo));
-		ProjectBasic pb = new ProjectBasic();
-		// risk.setPrjName(pb.getPrjName());
 		return risk;
 	}
 	
@@ -89,15 +87,20 @@ public class WebService_risk {
     }
     
     // 리스크 DB내 프로젝트 키에 해당하는 프로젝트명 출력
-    public List<ProjectBasic> getProjectByPrjNo(Risk sch) {
-    	return dao.getProjectByPrjNo(sch);
+    public List<ProjectBasic> getProjectByPrjNo(long prjNo) {
+    	return dao.getProjectByPrjNo(prjNo);
+    }
+    
+    // 리스크 DB내 사원 키에 해당하는 사원명 출력
+    public List<Emp> getEmpbyEmpNo(int empno) {
+    	return dao.getEmpByEmpNo(empno);
     }
 	
     // 파일 저장 경로
 	@Value("${riskFile.upload}")
 	private String path;
 	
-	// 등록처리
+	// 등록 처리
 	public String insertRisk(Risk ins) {
 		int insertRiskInfo = dao.insertRisk(ins);
 		String msg = insertRiskInfo>0?"리스크 등록 성공":"등록 실패"; msg+="\\n";
@@ -123,9 +126,30 @@ public class WebService_risk {
 		return msg;
 	}
 	
-	// 리스크 업데이트
+	// 리스크 업데이트 처리
 	public String updateRisk(Risk upt) {
-		return dao.updateRisk(upt)>0?"리스크 수정 성공":"수정 실패";
+		int updateRiskInfo = dao.updateRisk(upt);
+		String msg = updateRiskInfo>0?"리스크 수정 성공":"수정 실패"; msg+="\\n";
+		int updateRiskFile=0;
+		MultipartFile [] mpfs = upt.getReports();
+		if(mpfs!=null && mpfs.length>0) {
+			try {
+				for(MultipartFile mpf:mpfs) {
+				// 1) 파일업로드 처리
+					String fname = mpf.getOriginalFilename();
+					mpf.transferTo(new File(path+fname));
+					updateRiskFile += dao.updateRiskFile(
+							new RiskFile(upt.getRiskNo(), fname, path, "프로젝트 : " + upt.getPrjName() + "리스크 : " +upt.getRiskName()));
+				}
+			} catch (IllegalStateException e) {
+				msg += "파일업로드 오류 : " + e.getMessage() + "\\n";
+			} catch (IOException e) {
+				msg += "기타 오류 : " + e.getMessage() + "\\n";
+			}
+			msg += "리스크 파일 " + updateRiskFile + "건 등록 완료";
+				
+		}
+		return msg;
 	}
 	
 	// 리스크 삭제
@@ -148,6 +172,16 @@ public class WebService_risk {
 			msg+="등록된 파일"+delRiskFile+"건 삭제 완료";
 		}
 		return msg;
+	}
+	
+	// 파일 삭제 처리
+	public String deleteFile(RiskFile del) {
+		String fname = del.getFname();
+		File fileToDelete = new File(path+fname);
+		if(fileToDelete.exists()) {
+			fileToDelete.delete();
+		}
+		return dao.deleteFile(del.getFileNo())>0?"삭제 성공":"삭제 실패";
 	}
 	
 	

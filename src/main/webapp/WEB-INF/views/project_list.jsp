@@ -35,7 +35,16 @@
 
     <!-- Custom styles for this template-->
     <link href="${path}/a00_com/css/sb-admin-2.min.css" rel="stylesheet">
- <script src="${path}/a00_com/jquery.min.js"></script>
+<style type="text/css">
+#input-group-prepend {
+	width: 20%;
+}
+#input-group-text {
+	width: 100%;
+}
+
+</style>
+<script src="${path}/a00_com/jquery.min.js"></script>
 <script src="${path}/a00_com/popper.min.js"></script>
 <script src="${path}/a00_com/bootstrap.min.js"></script>
 <script src="${path}/a00_com/jquery-ui.js"></script>
@@ -43,6 +52,11 @@
 <script src="https://developers.google.com/web/ilt/pwa/working-with-the-fetch-api" type="text/javascript"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
+		var sessId = "${empResult.empno}"
+			if (sessId == "") {
+				alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
+				location.href = "${path}/login.do"
+			}
 		searchProject()
 		
 		$("#schBtn").click(function(){
@@ -66,6 +80,31 @@
 		})
 		
 		$("#regBtn").click(function(){
+			if($("#prjName").val() == ""){
+				alert("프로젝트명을 입력하세요.")
+				return
+			}
+			if($("#prjPriority").val()==""){
+				alert("프로젝트 중요도를 입력하세요.")
+				return
+			}
+			if($("#prjAcceptDateStr").val()==""){
+				alert("프로젝트 수주일을 입력하세요.")
+				return
+			}
+			if($("#beginDateStr").val()==""){
+				alert("프로젝트 시작일 입력하세요.")
+				return
+			}
+			if($("#endDateStr").val()==""){
+				alert("프로젝트 마감일을 입력하세요.")
+				return
+			}
+			if($("#teamName").val()==""){
+				alert("팀명을 입력하세요.")
+				return
+			}
+
 			if(confirm("등록하시겠습니까?")){
 				$.ajax({
 					type:"post",
@@ -76,7 +115,9 @@
 						alert(data.msg)
 						searchProject()
 						$("#clsBtn").click()
-						$("#clsBtn2").click()
+						$("#md01").click()
+						$("#frm02")[0].reset()
+						$("#teamMateList").html('')
 					},
 					error:function(err){
 						console.log(err)
@@ -87,6 +128,8 @@
 		
 		$("#tmBtn").click(function(){
 			transferData()
+			$("#clsBtn2").click()
+			$("#md02").click()
 		})
 		
 	});
@@ -146,18 +189,18 @@
 	}
 	
     // 데이터 전송 함수
+    var empNoList = [];
     function transferData() {
         var empno = parseInt($("select[name='empno']").val());
-        var auth = $("select[name='auth']").val();
-
+		
         // 데이터 전송
-        $("#empno").val(empno);
-        $("#auth").val(auth);
+        empNoList.push(empno);
+        console.log(empno);
+        console.log(empNoList);
         $("#teamMateList").append(
-        	"<div class='input-group-prepend'><span class='input-group-text  justify-content-center'>팀원</span></div>"
-        	+ "<input type='number' id='empno' class='form-control' value='"+empno+"' placeholder='팀원 선택' readonly='readonly'/>"
-        	+ "<div class='input-group-prepend'><span class='input-group-text  justify-content-center'>권한</span></div>"
-        	+ "<input type='text' id='auth' class='form-control' value='"+auth+"' placeholder='권한 선택' readonly='readonly'/>");
+        	"<div class='input-group-prepend' id='input-group-prepend'><span class='input-group-text  justify-content-center' id='input-group-text'>팀원</span></div>"
+        	+ "<input type='hidden' name='empno' id='empno' class='form-control' value='"+empNoList+"' placeholder='팀원 선택'/>"
+			+ "<span class='form-control'>"+empno+"</span>");
         // 모달 닫기
         $("#insertTeamMateModal").modal("hide");
     }
@@ -196,7 +239,7 @@
 			<div id="content">
 
 				<!-- Topbar    -->
-				<%@ include file="inc/topBar.jsp" %>
+				<%@ include file="inc/topBar.jsp"%>
 				<!-- End of Topbar -->
 
 				<!-- Begin Page Content -->
@@ -284,7 +327,7 @@
 						<!-- Project Basic -->
 							<div class="modal-header">
 								<h5 class="modal-title" id="prjTitle">프로젝트 등록</h5>
-								<button type="button" class="close" data-dismiss="modal"
+								<button type="button" class="close" id="md01" data-dismiss="modal"
 									aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
@@ -292,18 +335,18 @@
 							<form id="frm02" class="form" method="post">
 							<div class="modal-body">
 									<div class="input-group mb-3">
-										<div class="input-group-prepend ">
-											<span class="input-group-text  justify-content-center">
+										<div class="input-group-prepend " id="input-group-prepend">
+											<span class="input-group-text  justify-content-center" id="input-group-text">
 												프로젝트명</span>
 										</div>
-										<input type="text" name="prjName" class="form-control" value="" placeholder=""/>
+										<input type="text" name="prjName" id="prjName" class="form-control" value="" placeholder=""/>
 									</div>
 									<div class="input-group mb-3">
-										<div class="input-group-prepend ">
-											<span class="input-group-text  justify-content-center">
+										<div class="input-group-prepend " id="input-group-prepend">
+											<span class="input-group-text  justify-content-center" id="input-group-text">
 												중요도</span>
 										</div>
-										<select name="prjPriority" class="form-control">
+										<select name="prjPriority" id="prjPriority" class="form-control">
 											<option value="1">1</option>
 											<option value="2">2</option>
 											<option value="3">3</option>
@@ -312,36 +355,36 @@
 										</select> 
 									</div>
 									<div class="input-group mb-3">
-										<div class="input-group-prepend ">
-											<span class="input-group-text  justify-content-center">
+										<div class="input-group-prepend " id="input-group-prepend">
+											<span class="input-group-text  justify-content-center" id="input-group-text">
 												수주일</span>
 										</div>
-										<input type="date" name="prjAcceptDateStr" class="form-control" />
+										<input type="date" name="prjAcceptDateStr" id="prjAcceptDateStr" class="form-control" />
 									</div>
 									<div class="input-group mb-3">
-										<div class="input-group-prepend ">
-											<span class="input-group-text  justify-content-center">
+										<div class="input-group-prepend " id="input-group-prepend">
+											<span class="input-group-text  justify-content-center" id="input-group-text">
 												시작일</span>
 										</div>
-										<input type="date" name="beginDateStr" class="form-control"/>
+										<input type="date" name="beginDateStr" id="beginDateStr" class="form-control"/>
 									</div>
 									<div class="input-group mb-3">
-										<div class="input-group-prepend ">
-											<span class="input-group-text  justify-content-center">
+										<div class="input-group-prepend " id="input-group-prepend">
+											<span class="input-group-text  justify-content-center" id="input-group-text">
 												종료일</span>
 										</div>
-										<input type="date" name="endDateStr" class="form-control"/>
+										<input type="date" name="endDateStr" id="endDateStr" class="form-control"/>
 									</div>
 									<div class="input-group mb-3">
-										<div class="input-group-prepend ">
-											<span class="input-group-text  justify-content-center">
+										<div class="input-group-prepend " id="input-group-prepend">
+											<span class="input-group-text  justify-content-center" id="input-group-text">
 												진행단계</span>
 										</div>
-										<select name="prjStep" class="form-control">
-											<option value="설계">설계</option>
-											<option value="개발">개발</option>
-											<option value="테스트">테스트</option>
-											<option value="디버깅">디버깅</option>
+										<select name="prjStep" id="prjStep" class="form-control">
+											<option value="design">설계</option>
+											<option value="develop">개발</option>
+											<option value="test">테스트</option>
+											<option value="debug">디버깅</option>
 										</select>
 									</div>
 							</div>
@@ -353,11 +396,11 @@
 							</div>
 							<div class="modal-body">
 									<div class="input-group mb-3">
-										<div class="input-group-prepend ">
-											<span class="input-group-text  justify-content-center">
+										<div class="input-group-prepend " id="input-group-prepend">
+											<span class="input-group-text  justify-content-center" id="input-group-text">
 												팀명</span>
 										</div>
-										<input type="text" name="teamName" class="form-control" value="" placeholder="팀명 입력">
+										<input type="text" name="teamName" id="teamName" class="form-control" value="" placeholder="팀명 입력">
 											<a id="insertModal" href="#" class="btn btn-primary btn-icon-split"
 											   data-toggle="modal" data-target="#insertTeamMateModal">
 												<span class="icon text-white-50"> <i class="fas fa-arrow-right"></i></span>
@@ -378,7 +421,6 @@
 								<button type="button" id="clsBtn" class="btn btn-secondary"
 									data-dismiss="modal">Close</button>
 							</div>
-							<button type="button" id="clsBtn2" class="btn btn-secondary-hidden" data-dismiss="modal"></button>
 						</div>
 					</div>
 				</div>
@@ -392,7 +434,7 @@
 						<div class="modal-content">
 							<div class="modal-header">
 								<h5 class="modal-title" id="teamMateTitle">팀원 등록</h5>
-								<button type="button" class="close" data-dismiss="modal"
+								<button type="button" class="close" id="md02" data-dismiss="modal"
 									aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
@@ -400,8 +442,8 @@
 							<div class="modal-body">
 								<form id="frm04" class="form" method="post">
 									<div class="input-group mb-3">
-										<div class="input-group-prepend ">
-											<span class="input-group-text  justify-content-center">
+										<div class="input-group-prepend " id="input-group-prepend">
+											<span class="input-group-text  justify-content-center" id="input-group-text">
 												팀원</span>
 										</div>
 										<select name="empno"  class="form-control" >
@@ -411,17 +453,6 @@
 											</c:forEach>
 										</select>	
 									</div>
-									<div class="input-group mb-3">
-										<div class="input-group-prepend ">
-											<span class="input-group-text  justify-content-center">
-												권한</span>
-										</div>
-										<select name="auth" class="form-control">
-											<option value="">권한 설정</option>								
-											<option>팀장</option>								
-											<option>팀원</option>																
-										</select> 
-									</div>
 								</form>
 							</div>
 							<div class="modal-footer">
@@ -430,7 +461,7 @@
 										class="fas fa-arrow-right"></i>
 								</span> <span class="text">팀원 등록</span>
 								</a>
-								<button type="button" id="clsBtn" class="btn btn-secondary"
+								<button type="button" id="clsBtn2" class="btn btn-secondary"
 									data-dismiss="modal">Close</button>
 							</div>
 							<script type="text/javascript">
@@ -462,8 +493,7 @@
 	<a class="scroll-to-top rounded" href="#page-top"> 
 		<i class="fas fa-angle-up"></i>
 	</a>
-	<!-- Logout Modal-->
-	<%@ include file="inc/logout_modal.jsp" %>
+
 	
 <!-- Bootstrap core JavaScript-->
     <script src="${path}/a00_com/vendor/jquery/jquery.min.js"></script>
@@ -475,12 +505,5 @@
 
 <!-- Custom scripts for all pages-->
 <script src="${path}/a00_com/js/sb-admin-2.min.js"></script>
-
-<!-- Page level plugins -->
-<script src="${path}/a00_com/vendor/chart.js/Chart.min.js"></script>
-
-<!-- Page level custom scripts -->
-<script src="${path}/a00_com/js/demo/chart-area-demo.js"></script>
-<script src="${path}/a00_com/js/demo/chart-pie-demo.js"></script>	
 </body>
 </html>

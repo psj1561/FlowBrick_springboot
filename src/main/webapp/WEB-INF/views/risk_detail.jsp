@@ -50,16 +50,50 @@ input[type=file]::file-selector-button {
 	height: 400px;
 	overflow-y: auto;
 	text-align: left;
-	border: 0.5px solid green;
+}
+
+.input-group-prepend {
+	width: 10%;
+}
+.input-group-text {
+	width: 100%;
 }
 </style>
 
 <script src="${path}/a00_com/jquery.min.js"></script>
 <script src="${path}/a00_com/jquery-ui.js"></script>
 <script type="text/javascript">
+	var proc="${proc}"
+	var msg = "${msg}"
+		if(proc!=""){
+			if(proc=="upt"){
+				if(confirm(msg+"\n리스크 목록으로 이동하시겠습니까?")){
+					location.href="${path}/riskList"
+				}
+			}
+			if(proc=="del"){
+				alert(msg)
+				location.href="${path}/riskList"
+			}
+		}
+	
 	$(document).ready(function() {
-		var riskNo = $("risk.riskNo")
+		var riskNo = "${riskDetail.riskNo}"
+		$("#uptBtn").click(function(){
+			location.href="${path}/updateRiskFrm?riskNo="+riskNo
+		})
+		$("#delBtn").click(function(){
+			if(confirm("삭제하시겠습니까?")){
+				location.href="${path}/deleteRisk?riskNo="+riskNo
+			}
+		})
 	});
+	
+	function download(fname){
+		if( confirm(fname+" 다운로드 하시겠습니까?")){
+			location.href="${path}/downloadFile?fname="+fname
+		}
+	}	
 </script>
 </head>
 <body id="page-top">
@@ -94,8 +128,10 @@ input[type=file]::file-selector-button {
 									<div class="input-group-prepend ">
 										<span class="input-group-text  justify-content-center">
 											프로젝트명</span>
-									</div>
-									<span class="form-control">${riskDetail.prjNo}</span>
+									</div>									
+									<c:forEach var="proj" items="${projectByPrjNo2}">
+										<span class="form-control">${proj.prjName}</span>
+									</c:forEach>
 								</div>	
 								
 								<div class="input-group mb-3">	
@@ -103,12 +139,9 @@ input[type=file]::file-selector-button {
 										<span class="input-group-text  justify-content-center">
 											작성자</span>
 									</div>		
-									<span class="form-control">${riskDetail.empNo}</span>	
-									<!-- 
-									session값에 있는 id로 작성자를 자동등록하게 처리.
-									==> 수정삭제시에 현재 로그인한 session의 id와 작성자의 id가 
-									동일할 때만 수정/삭제처리 가능하게 한다.
-									-->	
+									<c:forEach var="emp" items="${empByEmpNo}">
+										<span class="form-control">${emp.ename}</span>
+									</c:forEach>
 								</div>	
 								
 								<div class="input-group mb-3">	
@@ -124,7 +157,14 @@ input[type=file]::file-selector-button {
 										<span class="input-group-text  justify-content-center">
 											첨부파일</span>
 									</div>
-									<input type="file" name="reports" multiple="multiple" class="form-control" value="" />
+									<c:choose>
+										<c:when test="${empty riskDetail.fnames}"><span class="form-control">-</span></c:when>
+											<c:otherwise>
+												<c:forEach var="fname" items="${riskDetail.fnames}">
+													<span class="form-control" ondblclick="download('${fname}')">${fname}</span>
+												</c:forEach>
+											</c:otherwise>
+									</c:choose>
 								</div>	
 									
 								<div class="input-group mb-3">	
@@ -132,7 +172,7 @@ input[type=file]::file-selector-button {
 										<span class="input-group-text  justify-content-center">
 											리스크 내용</span>
 									</div>
-									<textarea id="chatArea" name="riskContent" class="form-control" ></textarea>	
+									<span id="chatArea" name="riskContent" class="form-control" >${riskDetail.riskContent}</span>	
 								</div>
 							<!-- 버튼 div -->
 							<div class="my-2"></div>
@@ -140,11 +180,15 @@ input[type=file]::file-selector-button {
 								<div></div>
 	
 								<div>
-									<a id="regBtn" class="btn btn-primary btn-icon-split"> <span
-										class="icon text-white-50"> <i
-											class="fas fa-arrow-right"></i>
-									</span> <span class="text">등록하기</span>
-									</a> 
+									<a id="uptBtn" class="btn btn-info btn-icon-split"> <span
+										class="icon text-white-50"> <i class="fas fa-arrow-right"></i>
+									</span> <span class="text">수정하기</span>
+									</a>
+									
+									<a id="delBtn" class="btn btn-danger btn-icon-split"> <span
+										class="icon text-white-50"> <i class="fas fa-trash"></i>
+									</span> <span class="text">삭제하기</span>
+									</a>
 									
 									<a href="${path}/riskList"
 										class="btn btn-secondary btn-icon-split"> <span

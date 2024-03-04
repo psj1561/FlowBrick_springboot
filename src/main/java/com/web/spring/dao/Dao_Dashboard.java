@@ -14,22 +14,22 @@ public interface Dao_Dashboard {
 	// 모든 프로젝트 진행도
 	@Select("SELECT\r\n"
 			+ "		COUNT(*) AS pj,\r\n"
-			+ "		COUNT(CASE WHEN PRJSTEP = '완료' THEN 1 END) AS complete,\r\n"
-			+ "		COUNT(CASE WHEN PRJSTEP = '개발' THEN 1 END) AS develop,\r\n"
-			+ "		COUNT(CASE WHEN PRJSTEP = '설계' THEN 1 END) AS design,\r\n"
-			+ "		COUNT(CASE WHEN PRJSTEP = '테스트' THEN 1 END) AS test,\r\n"
-			+ "		COUNT(CASE WHEN PRJSTEP = '디버깅' THEN 1 END) AS debug\r\n"
+			+ "		COUNT(CASE WHEN PRJSTEP = 'complete' THEN 1 END) AS complete,\r\n"
+			+ "		COUNT(CASE WHEN PRJSTEP = 'develop' THEN 1 END) AS develop,\r\n"
+			+ "		COUNT(CASE WHEN PRJSTEP = 'design' THEN 1 END) AS design,\r\n"
+			+ "		COUNT(CASE WHEN PRJSTEP = 'test' THEN 1 END) AS test,\r\n"
+			+ "		COUNT(CASE WHEN PRJSTEP = 'debug' THEN 1 END) AS debug\r\n"
 			+ "	FROM projectbasic")
 	Wizet_PrjStep getAllPrjStep();
 	
 	// 로그인한 사원의 프로젝트 진행도
 	@Select("SELECT\r\n"
 			+ "	COUNT(*) AS pj,\r\n"
-			+ "	COUNT(CASE WHEN PRJSTEP = '완료' THEN 1 END) AS complete,\r\n"
-			+ "	COUNT(CASE WHEN PRJSTEP = '개발' THEN 1 END) AS develop,\r\n"
-			+ "	COUNT(CASE WHEN PRJSTEP = '설계' THEN 1 END) AS design,\r\n"
-			+ "	COUNT(CASE WHEN PRJSTEP = '테스트' THEN 1 END) AS test,\r\n"
-			+ "	COUNT(CASE WHEN PRJSTEP = '디버깅' THEN 1 END) AS debug\r\n"
+			+ "	COUNT(CASE WHEN PRJSTEP = 'complete' THEN 1 END) AS complete,\r\n"
+			+ "	COUNT(CASE WHEN PRJSTEP = 'develop' THEN 1 END) AS develop,\r\n"
+			+ "	COUNT(CASE WHEN PRJSTEP = 'design' THEN 1 END) AS design,\r\n"
+			+ "	COUNT(CASE WHEN PRJSTEP = 'test' THEN 1 END) AS test,\r\n"
+			+ "	COUNT(CASE WHEN PRJSTEP = 'debug' THEN 1 END) AS debug\r\n"
 			+ "	FROM (\r\n"
 			+ "		SELECT pb.*\r\n"
 			+ "		FROM PROJECTBASIC pb, PROJECTTEAM pt, TEAMMATE tm\r\n"

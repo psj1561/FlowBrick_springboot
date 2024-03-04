@@ -2,11 +2,11 @@ package com.web.spring.vo;
 
 public class Calendar {
 	private int calId;
-	private int prjNo;
+	private long prjNo;
 	private int empNo;
 	private String title;
-	private String startDate;
-	private String endDate;
+	private String start;
+	private String end;
 	private String content;
 	private String backgroundColor;
 	private String textColor;
@@ -18,32 +18,32 @@ public class Calendar {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Calendar(int calId, int prjNo, int empNo, String title, String startDate, String endDate, String content,
+	public Calendar(int calId, long prjNo, int empNo, String title, String start, String end, String content,
 			String backgroundColor, String textColor, boolean allDay, String urlLink) {
 		super();
 		this.calId = calId;
 		this.prjNo = prjNo;
 		this.empNo = empNo;
 		this.title = title;
-		this.startDate = startDate;
-		this.endDate = endDate;
+		this.start = start;
+		this.end = end;
 		this.content = content;
 		this.backgroundColor = backgroundColor;
 		this.textColor = textColor;
 		this.allDay = allDay;
 		this.urlLink = urlLink;
 	}
-	
+
 	public int getCalId() {
 		return calId;
 	}
 	public void setCalId(int calId) {
 		this.calId = calId;
 	}
-	public int getPrjNo() {
+	public long getPrjNo() {
 		return prjNo;
 	}
-	public void setPrjNo(int prjNo) {
+	public void setPrjNo(long prjNo) {
 		this.prjNo = prjNo;
 	}
 	public int getEmpNo() {
@@ -58,17 +58,17 @@ public class Calendar {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getStartDate() {
-		return startDate;
+	public String getStart() {
+		return start;
 	}
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
+	public void setStart(String start) {
+		this.start = start;
 	}
-	public String getEndDate() {
-		return endDate;
+	public String getEnd() {
+		return end;
 	}
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
+	public void setEnd(String end) {
+		this.end = end;
 	}
 	public String getContent() {
 		return content;
